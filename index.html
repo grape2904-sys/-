@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts (Gowun Batang & Jua for Traditional Kid Feel) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
     <script>
@@ -48,7 +48,6 @@
         .font-jua { font-family: 'Jua', sans-serif; }
         .font-batang { font-family: 'Gowun Batang', serif; }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -62,7 +61,6 @@
             border-radius: 4px;
         }
 
-        /* Traditional Pattern Card Shadow */
         .trad-card {
             background: #FDFBF7;
             border: 3px solid #6E5340;
@@ -79,7 +77,6 @@
             box-shadow: 0 1px 0 #4A3525;
         }
 
-        /* Animated Pulse for Quiz Status */
         @keyframes bounce-slow {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -101,7 +98,6 @@
             </div>
         </div>
 
-        <!-- Right Side Stats -->
         <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-jua">
             <div class="bg-[#3D291F] px-3 py-1.5 rounded-xl border border-amber-700/50 flex items-center gap-1.5">
                 <span class="text-amber-400"><i class="fa-solid fa-star"></i></span>
@@ -119,7 +115,6 @@
 
         <!-- 1. HOME SCREEN (Timeline Era Map) -->
         <section id="screen-home" class="w-full trad-card p-4 sm:p-6 flex flex-col gap-5">
-            <!-- Banner -->
             <div class="bg-amber-100/80 border-2 border-amber-300 rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4">
                 <div class="w-14 h-14 sm:w-16 sm:h-16 bg-amber-200 rounded-full flex items-center justify-center text-3xl sm:text-4xl shadow shrink-0">
                     🧙‍♂️
@@ -133,18 +128,15 @@
                 </div>
             </div>
 
-            <!-- Chronological Era Map -->
             <div class="flex flex-col gap-3">
                 <h3 class="font-jua text-base sm:text-lg text-slate-800 flex items-center gap-2">
                     <span>📜</span> 조선시대 시간 순서별 타임라인 지도
                 </h3>
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="era-card-container">
-                    <!-- Cards dynamically generated -->
+                    <!-- Dynamically generated cards -->
                 </div>
             </div>
 
-            <!-- Bottom Actions -->
             <div class="flex justify-between items-center pt-3 border-t border-amber-900/10 gap-2">
                 <button onclick="showReviewScreen()" class="btn-push bg-amber-700 hover:bg-amber-800 text-white font-jua text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2">
                     <i class="fa-solid fa-book-bookmark"></i> 오답노트 복습하기 (<span id="wrong-count">0</span>)
@@ -157,7 +149,6 @@
 
         <!-- 2. QUIZ PLAY SCREEN -->
         <section id="screen-quiz" class="w-full trad-card p-4 sm:p-6 flex-col gap-4 hidden">
-            <!-- Quiz Progress & Era Header -->
             <div class="flex justify-between items-center border-b-2 border-dashed border-amber-800/20 pb-3">
                 <div class="flex items-center gap-2">
                     <span id="quiz-era-badge" class="bg-amber-800 text-amber-100 font-jua text-xs px-2.5 py-1 rounded-lg">
@@ -172,7 +163,6 @@
                 </div>
             </div>
 
-            <!-- Mascot Speech / Encourage Box -->
             <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
                 <div id="mascot-avatar" class="text-3xl shrink-0 animate-bounce-slow">
                     🧙‍♂️
@@ -182,35 +172,29 @@
                 </div>
             </div>
 
-            <!-- Quiz Question Box -->
             <div class="bg-white border-2 border-amber-800/30 rounded-2xl p-4 sm:p-5 shadow-inner flex flex-col gap-3">
                 <div class="flex items-start gap-2">
                     <span id="quiz-type-tag" class="bg-joseonBlue text-white font-jua text-[11px] px-2 py-0.5 rounded shrink-0 mt-0.5">
                         4지선다
                     </span>
                     <h2 id="quiz-question" class="font-jua text-base sm:text-lg text-slate-900 leading-snug">
-                        질문 텍스트가 들어갑니다.
+                        질문 텍스트
                     </h2>
                 </div>
-                <!-- Clue Image/Box if available -->
                 <div id="quiz-clue-box" class="hidden bg-amber-50/80 border border-amber-200 p-3 rounded-xl text-xs sm:text-sm text-amber-900 font-batang italic text-center">
-                    <!-- Dynamic Clue -->
                 </div>
             </div>
 
-            <!-- Quiz Options Box -->
             <div id="quiz-options-box" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-1">
-                <!-- Dynamic Options Buttons -->
             </div>
 
-            <!-- Quiz Answer Feedback & Explanation Modal/Box (Initially Hidden) -->
             <div id="quiz-explanation-box" class="hidden bg-emerald-50 border-2 border-emerald-400 rounded-xl p-4 flex flex-col gap-2">
                 <div class="flex items-center gap-2">
                     <span id="result-icon" class="text-xl">✅</span>
                     <h4 id="result-title" class="font-jua text-base text-emerald-900">정답입니다! (+10점)</h4>
                 </div>
                 <p id="explanation-text" class="text-xs sm:text-sm font-batang text-slate-700 leading-relaxed">
-                    해설 설명이 이곳에 작성됩니다.
+                    해설 설명
                 </p>
                 <button id="btn-next-quiz" onclick="nextQuizQuestion()" class="btn-push self-end bg-joseonGreen hover:bg-emerald-700 text-white font-jua text-xs sm:text-sm px-5 py-2 rounded-xl mt-1">
                     다음 문제로 이동 <i class="fa-solid fa-arrow-right ml-1"></i>
@@ -231,7 +215,6 @@
                 </p>
             </div>
 
-            <!-- Earned Badge Display -->
             <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 w-full max-w-sm flex flex-col items-center gap-2">
                 <span class="text-xs font-jua text-amber-800">새로 획득한 역사 훈장</span>
                 <div id="clear-badge-icon" class="text-5xl my-1">🥇</div>
@@ -243,7 +226,7 @@
             </button>
         </section>
 
-        <!-- 4. REVIEW MODE (Wrong Questions) SCREEN -->
+        <!-- 4. REVIEW MODE SCREEN -->
         <section id="screen-review" class="w-full trad-card p-4 sm:p-6 flex-col gap-4 hidden">
             <div class="flex justify-between items-center border-b-2 border-dashed border-amber-800/20 pb-3">
                 <h3 class="font-jua text-base sm:text-lg text-slate-800 flex items-center gap-2">
@@ -255,19 +238,16 @@
             </div>
 
             <div id="review-list-container" class="flex flex-col gap-3 max-h-[420px] overflow-y-auto pr-1">
-                <!-- Dynamically populated -->
             </div>
         </section>
 
     </main>
 
-    <!-- Footer -->
     <footer class="mt-4 text-center text-xs text-slate-600 font-batang">
         초등학교 5학년 사회(역사) 교과과정 연계 퀴즈 프로그램
     </footer>
 
     <script>
-        // Web Audio API Sound Engine
         let audioCtx = null;
         function initAudio() {
             if (!audioCtx) {
@@ -286,9 +266,9 @@
 
             if (type === 'correct') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, now); // C5
-                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.1);
+                osc.frequency.setValueAtTime(783.99, now + 0.2);
                 gain.gain.setValueAtTime(0.2, now);
                 gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
                 osc.start(now);
@@ -325,7 +305,6 @@
             }
         }
 
-        // HISTORICAL DATABASE (Chronological order aligned with 5th grade curriculum)
         const erasData = [
             {
                 id: 1,
@@ -409,7 +388,7 @@
                         clue: "💡 힌트: 삼전도의 굴욕이라고도 부르는 추운 겨울의 전쟁이에요.",
                         options: ["임진왜란", "병자호란", "정묘호란", "홍경래의 난"],
                         answer: 1,
-                        explanation: "병자호란(1636년)은 청나라의 침략으로 인조가 남한산성에서 항전했으나 물자가 부족해 결국 삼전도에서 청나라와 신하의 예을 맺게 된 아픈 역사입니다."
+                        explanation: "병자호란(1636년)은 청나라의 침략으로 인조가 남한산성에서 항전했으나 물자가 부족해 결국 삼전도에서 청나라와 신하의 예를 맺게 된 아픈 역사입니다."
                     }
                 ]
             },
@@ -487,18 +466,17 @@
                         clue: "💡 힌트: 우정총국 개국 잔치 때 갑신정변을 일으키기도 했어요.",
                         options: ["개화파", "위정척사파", "붕당", "의병"],
                         answer: 0,
-                        explanation: "김옥균, 박영효 등의 개화파는 근대 문물을 적극 도입하여 근대 국가로 나아가고자 이선 노력을 기울였습니다."
+                        explanation: "김옥균, 박영효 등의 개화파는 근대 문물을 적극 도입하여 근대 국가로 나아가고자 노력을 기울였습니다."
                     }
                 ]
             }
         ];
 
-        // State Management stored in localStorage
         const STORAGE_KEY = 'joseon_history_quiz_v1';
         let userProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
             score: 0,
-            clearedEras: [], // array of era IDs
-            wrongQuizzes: [] // list of wrong quiz items
+            clearedEras: [],
+            wrongQuizzes: []
         };
 
         let currentEra = null;
@@ -516,7 +494,6 @@
             document.getElementById('wrong-count').innerText = userProgress.wrongQuizzes.length;
         }
 
-        // NAVIGATION LOGIC
         function showHomeScreen() {
             playSound('click');
             document.getElementById('screen-home').classList.remove('hidden');
@@ -570,12 +547,10 @@
                         }
                     </div>
                 `;
-
                 container.appendChild(card);
             });
         }
 
-        // QUIZ PLAY LOGIC
         function startQuiz(eraId) {
             playSound('click');
             currentEra = erasData.find(e => e.id === eraId);
@@ -592,7 +567,6 @@
             const quiz = currentEra.quizzes[currentQuizIndex];
             selectedOption = null;
 
-            // Reset UI
             document.getElementById('quiz-era-badge').innerText = `제 ${currentEra.id}시대`;
             document.getElementById('quiz-era-title').innerText = currentEra.title;
             document.getElementById('quiz-current-num').innerText = currentQuizIndex + 1;
@@ -600,7 +574,6 @@
             document.getElementById('quiz-type-tag').innerText = quiz.type;
             document.getElementById('quiz-question').innerText = quiz.question;
 
-            // Clue box
             const clueBox = document.getElementById('quiz-clue-box');
             if (quiz.clue) {
                 clueBox.innerText = quiz.clue;
@@ -609,11 +582,9 @@
                 clueBox.classList.add('hidden');
             }
 
-            // Mascot message
             document.getElementById('mascot-avatar').innerText = ['🧙‍♂️', '🦁', '📜'][currentQuizIndex % 3];
             document.getElementById('mascot-msg').innerText = `"차근차근 지문을 읽고 정답을 선택해보세요!"`;
 
-            // Render Options
             const optionsBox = document.getElementById('quiz-options-box');
             optionsBox.innerHTML = '';
 
@@ -634,12 +605,11 @@
                 optionsBox.appendChild(btn);
             });
 
-            // Hide Explanation
             document.getElementById('quiz-explanation-box').classList.add('hidden');
         }
 
         function checkAnswer(chosenIdx, btnElement) {
-            if (selectedOption !== null) return; // Prevent double taps
+            if (selectedOption !== null) return;
             selectedOption = chosenIdx;
 
             const quiz = currentEra.quizzes[currentQuizIndex];
@@ -672,7 +642,6 @@
                 btnElement.classList.remove('bg-white', 'hover:bg-amber-50');
                 btnElement.classList.add('bg-red-100', 'border-red-400', 'text-red-900');
 
-                // Highlight correct option
                 allOptionBtns[quiz.answer].classList.add('bg-emerald-100', 'border-emerald-500');
 
                 resultIcon.innerText = "💡";
@@ -682,7 +651,6 @@
 
                 document.getElementById('mascot-msg').innerText = `"틀려도 괜찮아요! 아래 해설을 읽으며 배워가면 돼요!"`;
 
-                // Add to Wrong Quizzes Notebook (Avoid duplication)
                 const alreadyAdded = userProgress.wrongQuizzes.some(q => q.question === quiz.question);
                 if (!alreadyAdded) {
                     userProgress.wrongQuizzes.push({
@@ -704,7 +672,6 @@
             if (currentQuizIndex < currentEra.quizzes.length) {
                 loadCurrentQuizQuestion();
             } else {
-                // Era Finished!
                 finishEra();
             }
         }
@@ -714,11 +681,10 @@
 
             if (!userProgress.clearedEras.includes(currentEra.id)) {
                 userProgress.clearedEras.push(currentEra.id);
-                userProgress.score += 50; // Era Clear Bonus
+                userProgress.score += 50;
                 saveProgress();
             }
 
-            // Confetti effect
             if (typeof confetti === 'function') {
                 confetti({
                     particleCount: 100,
@@ -738,7 +704,6 @@
             document.getElementById('clear-badge-name').innerText = currentEra.badgeName;
         }
 
-        // REVIEW MODE (WRONG QUESTIONS)
         function showReviewScreen() {
             playSound('click');
             document.getElementById('screen-home').classList.add('hidden');
@@ -800,7 +765,6 @@
             }
         }
 
-        // INITIAL LOAD
         window.onload = () => {
             renderEraCards();
             updateHeaderStats();
