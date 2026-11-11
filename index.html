@@ -3,32 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>★~ 추억의 미니홈피 ~★</title>
+    <title>조선시대 시간여행 역사 탐험대 (초등 5학년)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Retro Fonts (NeoDunggeunmo & Galmuri) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm.css">
-    <!-- FontAwesome Icons -->
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Gowun Batang & Jua for Traditional Kid Feel) -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        cyBg: '#A3B4C8',
-                        cyOuter: '#809BB5',
-                        cyBorder: '#647D97',
-                        cyOrange: '#FF6C00',
-                        cyOrangeLight: '#FF8429',
-                        cyOrangeSoft: '#FFF4EB',
-                        cyGrayBg: '#EEEEEE',
-                        cyHeaderBg: '#1D829B',
+                        hanji: '#FDFBF7',
+                        hanjiBorder: '#E6DCCB',
+                        joseonRed: '#D32F2F',
+                        joseonBlue: '#1976D2',
+                        joseonGold: '#FFA000',
+                        joseonGreen: '#388E3C',
+                        darkWood: '#4A3525',
                     },
                     fontFamily: {
-                        galmuri: ['Galmuri9', 'sans-serif'],
-                        neodgm: ['NeoDunggeunmo', 'sans-serif']
+                        jua: ['Jua', 'sans-serif'],
+                        batang: ['Gowun Batang', 'serif'],
+                        nanum: ['Nanum Gothic', 'sans-serif'],
                     }
                 }
             }
@@ -36,947 +37,773 @@
     </script>
 
     <style>
-        * {
-            font-family: 'NeoDunggeunmo', 'Galmuri9', sans-serif;
-            letter-spacing: -0.5px;
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #F4EBE1;
+            background-image: radial-gradient(#E5D7C5 1px, transparent 1px);
+            background-size: 16px 16px;
+            user-select: none;
         }
 
-        /* Cyworld Retro Scrollbar */
+        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-batang { font-family: 'Gowun Batang', serif; }
+
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #F1F1F1;
-            border: 1px solid #CCCCCC;
+            background: #EFE6D8;
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #FF8429;
-            border-radius: 2px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #E36B00;
+            background: #C4A482;
+            border-radius: 4px;
         }
 
-        /* Classic Retro Outer Frame Shadow */
-        .cy-window-box {
-            background-color: #B2C4D6;
-            background-image: radial-gradient(#97ABC0 1px, transparent 0);
-            background-size: 8px 8px;
-            box-shadow: 6px 6px 0px rgba(0,0,0,0.25);
+        /* Traditional Pattern Card Shadow */
+        .trad-card {
+            background: #FDFBF7;
+            border: 3px solid #6E5340;
+            box-shadow: 0 8px 0 #4A3525, 0 10px 15px rgba(0,0,0,0.1);
+            border-radius: 1.25rem;
         }
 
-        .cy-inner-frame {
-            border: 2px border #6B88A5;
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.15);
+        .btn-push {
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 0 #4A3525;
+        }
+        .btn-push:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #4A3525;
         }
 
-        /* Cyworld Side Navigation Tabs */
-        .cy-tab {
-            background: #2E81A5;
-            color: white;
-            border: 1px solid #1A5974;
-            border-left: none;
-            border-radius: 0 6px 6px 0;
-            box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-            transition: all 0.15s ease;
+        /* Animated Pulse for Quiz Status */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
-        .cy-tab:hover {
-            background: #3BA0CC;
-            transform: translateX(3px);
-        }
-        .cy-tab.active {
-            background: white !important;
-            color: #FF6C00 !important;
-            border: 1px solid #A6A6A6 !important;
-            border-left: none !important;
-            font-weight: bold;
-            transform: translateX(4px);
-        }
-
-        /* Pixel Dot Pattern Effects */
-        .pixel-border {
-            border: 2px solid #333333;
-            box-shadow: 2px 2px 0 border #666;
-        }
-
-        .dotted-line {
-            background-image: linear-gradient(to right, #999 50%, rgba(255,255,255,0) 0%);
-            background-position: bottom;
-            background-size: 6px 1px;
-            background-repeat: repeat-x;
-        }
-
-        /* Dot Matrix Avatar Canvas Background */
-        .miniroom-bg {
-            background: #EAF4FA;
-            background-image: 
-                linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-            background-size: 16px 16px;
-        }
-
-        @keyframes floatBubble {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-4px); }
-        }
-        .animate-float {
-            animation: floatBubble 2.5s infinite ease-in-out;
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite;
         }
     </style>
 </head>
-<body class="bg-cyBg min-h-screen flex items-center justify-center p-2 sm:p-4 select-none">
+<body class="min-h-screen text-slate-800 flex flex-col items-center justify-between p-2 sm:p-4">
 
-    <!-- 메인 미니홈피 전체 창 (Dot Outer Border Frame) -->
-    <div class="cy-window-box w-full max-w-[1020px] rounded-2xl p-3 sm:p-5 border-4 border-white relative">
-        
-        <!-- 상단 미니홈피 제목 & 방문자 수 / BGM 플레이어 -->
-        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center bg-white/90 rounded-t-xl px-4 py-2 border-2 border-cyBorder mb-2 gap-2 text-xs sm:text-sm">
-            <!-- 방문자 수 -->
-            <div class="flex items-center gap-3 font-bold text-slate-700">
-                <span class="text-cyOrange">TODAY <span id="today-count" class="text-red-600">128</span></span>
-                <span class="text-slate-300">|</span>
-                <span class="text-slate-600">TOTAL <span id="total-count" class="text-slate-800">45,820</span></span>
-            </div>
-
-            <!-- 미니홈피 타이틀 -->
-            <div class="flex-1 text-center font-bold text-slate-800 truncate px-2">
-                <span id="homepage-title" class="text-base sm:text-lg text-cyOrange hover:underline cursor-pointer" onclick="editHomepageTitle()" title="클릭하여 타이틀 수정">
-                    ★~ 난... ㄱ├끔 눈물을 흘린ㄷ├... ~★
-                </span>
-                <i class="fa-solid fa-pen text-[10px] text-slate-400 ml-1"></i>
-            </div>
-
-            <!-- BGM 뮤직 플레이어 -->
-            <div class="flex items-center gap-2 bg-cyOrangeSoft px-3 py-1.5 rounded-lg border border-orange-200">
-                <span class="text-cyOrange animate-pulse"><i class="fa-solid fa-music"></i></span>
-                <div class="flex flex-col text-[11px] leading-tight">
-                    <span class="font-bold text-orange-900 truncate max-w-[130px]" id="bgm-title">프리스타일 - Y (FT. 호연주)</span>
-                    <span class="text-[9px] text-orange-600">CYWORLD BGM 2004</span>
-                </div>
-                <select id="bgm-select" onchange="changeBGM(this.value)" class="text-[10px] bg-white border border-orange-300 rounded px-1 py-0.5 outline-none cursor-pointer">
-                    <option value="0">프리스타일 - Y</option>
-                    <option value="1">YUI - Goodbye Days</option>
-                    <option value="2">윤도현 - 사랑했나봐</option>
-                    <option value="3">MC몽 - I Love U Oh Thank U</option>
-                </select>
-                <button id="btn-bgm-toggle" onclick="toggleBGM()" class="w-6 h-6 bg-cyOrange hover:bg-cyOrangeLight text-white rounded flex items-center justify-center shadow text-xs">
-                    <i id="bgm-icon" class="fa-solid fa-play"></i>
-                </button>
+    <!-- Header Navigation -->
+    <header class="w-full max-w-4xl bg-[#5C4033] text-amber-100 p-3 sm:p-4 rounded-2xl border-4 border-[#3D291F] shadow-lg flex justify-between items-center mb-3">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="showHomeScreen()">
+            <span class="text-2xl sm:text-3xl">🏯</span>
+            <div>
+                <h1 class="font-jua text-lg sm:text-2xl text-amber-300 leading-tight">조선시대 시간여행 역사 탐험대</h1>
+                <p class="text-[11px] sm:text-xs text-amber-200/80 font-batang">초등학교 5학년 역사 완벽 마스터!</p>
             </div>
         </div>
 
-        <!-- 미니홈피 메인 레이아웃 (좌 측 프로필 + 우 측 컨텐츠 + 오른쪽 탭) -->
-        <div class="relative flex flex-col md:flex-row gap-2 bg-white rounded-b-xl border-2 border-cyBorder p-3 min-h-[620px]">
-            
-            <!-- [좌측 프로필 사이드바] -->
-            <aside class="w-full md:w-[230px] flex flex-col justify-between border-2 border-dashed border-slate-300 rounded-xl p-3 bg-slate-50/50">
+        <!-- Right Side Stats -->
+        <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-jua">
+            <div class="bg-[#3D291F] px-3 py-1.5 rounded-xl border border-amber-700/50 flex items-center gap-1.5">
+                <span class="text-amber-400"><i class="fa-solid fa-star"></i></span>
+                <span>점수: <span id="header-score" class="text-amber-300 text-base">0</span>점</span>
+            </div>
+            <div class="bg-[#3D291F] px-3 py-1.5 rounded-xl border border-amber-700/50 flex items-center gap-1.5">
+                <span class="text-red-400"><i class="fa-solid fa-medal"></i></span>
+                <span>훈장: <span id="header-badges" class="text-amber-300 text-base">0</span>/4</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="w-full max-w-4xl flex-1 flex flex-col justify-center items-center relative">
+
+        <!-- 1. HOME SCREEN (Timeline Era Map) -->
+        <section id="screen-home" class="w-full trad-card p-4 sm:p-6 flex flex-col gap-5">
+            <!-- Banner -->
+            <div class="bg-amber-100/80 border-2 border-amber-300 rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-amber-200 rounded-full flex items-center justify-center text-3xl sm:text-4xl shadow shrink-0">
+                    🧙‍♂️
+                </div>
                 <div>
-                    <!-- 오늘 기분 셀렉터 -->
-                    <div class="flex justify-between items-center bg-sky-100 border border-sky-200 rounded px-2 py-1 text-xs mb-3 text-sky-900">
-                        <span class="font-bold"><i class="fa-solid fa-smile text-amber-500"></i> TODAY IS...</span>
-                        <select id="today-mood" onchange="saveMood(this.value)" class="bg-white text-[11px] border border-sky-300 rounded px-1">
-                            <option value="맑음 ☀️">맑음 ☀️</option>
-                            <option value="슬픔 ☔">슬픔 ☔</option>
-                            <option value="행복 🥰">행복 🥰</option>
-                            <option value="피곤 🥱">피곤 🥱</option>
-                            <option value="열공 📚">열공 📚</option>
-                        </select>
-                    </div>
-
-                    <!-- 미니미 프로필 사진 -->
-                    <div class="w-full h-44 bg-slate-200 rounded-lg border-2 border-slate-300 overflow-hidden relative group mb-3 flex items-center justify-center">
-                        <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="Profile" class="w-full h-full object-cover">
-                        <button onclick="changeProfileImg()" class="absolute bottom-2 right-2 bg-black/60 hover:bg-black/80 text-white text-[10px] px-2 py-1 rounded border border-white/50 backdrop-blur-sm">
-                            <i class="fa-solid fa-camera"></i> 사진변경
-                        </button>
-                    </div>
-
-                    <!-- 프로필 소개글 -->
-                    <div class="bg-white p-2.5 rounded-lg border border-slate-200 text-xs text-slate-700 min-h-[110px] whitespace-pre-wrap leading-relaxed relative">
-                        <p id="profile-bio">퍼가요~♡
-2000년대 감성 충만했던 그 시절.
-음악 들으면서 도토리 선물받던 미니홈피에 오신 걸 환영합니다!
-일촌평 많이 남겨주세요...★</p>
-                        <button onclick="editBio()" class="absolute top-1 right-1 text-[10px] text-slate-400 hover:text-cyOrange">
-                            <i class="fa-solid fa-pen"></i>
-                        </button>
-                    </div>
+                    <h2 class="font-jua text-base sm:text-lg text-amber-900">안녕! 나는 역사 길잡이 '조선도사'야!</h2>
+                    <p class="text-xs sm:text-sm text-slate-700 mt-0.5 leading-relaxed">
+                        1392년 조선의 건국부터 개항기까지 시간 순서대로 퀴즈를 풀며 역사를 마스터해볼까? 
+                        모든 시대의 퀴즈를 맞추고 <b>'조선 역사 마스터 훈장'</b>을 획득해 봐!
+                    </p>
                 </div>
+            </div>
 
-                <!-- 일촌 정보 & 일촌 바로가기 드롭다운 -->
-                <div class="mt-4 pt-3 border-t border-slate-200">
-                    <div class="flex justify-between items-center text-[11px] mb-1.5 font-bold text-slate-600">
-                        <span><i class="fa-solid fa-heart text-red-500"></i> 일촌목록</span>
-                        <span class="text-cyOrange" id="ilchon-count">5명</span>
-                    </div>
-                    <select id="ilchon-select" onchange="visitIlchon(this.value)" class="w-full text-xs bg-white border border-slate-300 rounded p-1.5 outline-none cursor-pointer text-slate-700">
-                        <option value="">파도타기 일촌 선택...</option>
-                        <option value="★길동이★">★길동이★ (베프)</option>
-                        <option value="영희공주">영희공주 (깜찍이)</option>
-                        <option value="철수대장">철수대장 (탐험가)</option>
-                        <option value="민수짱">민수짱 (감성보이)</option>
-                        <option value="유진★">유진★ (춤꾼)</option>
-                    </select>
+            <!-- Chronological Era Map -->
+            <div class="flex flex-col gap-3">
+                <h3 class="font-jua text-base sm:text-lg text-slate-800 flex items-center gap-2">
+                    <span>📜</span> 조선시대 시간 순서별 타임라인 지도
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="era-card-container">
+                    <!-- Cards dynamically generated -->
                 </div>
-            </aside>
+            </div>
 
-            <!-- [우측 메인 컨텐츠 영역] -->
-            <main class="flex-1 flex flex-col justify-between bg-white rounded-xl border border-slate-200 p-3 sm:p-4 overflow-y-auto max-h-[620px] relative">
-                
-                <!-- 1. HOME TAB CONTENT -->
-                <div id="tab-home" class="tab-content flex flex-col gap-4">
-                    <!-- 최근 게시물 롤링 텍스트 -->
-                    <div class="bg-cyOrangeSoft border border-orange-200 rounded-lg p-2.5 text-xs flex items-center justify-between text-orange-900">
-                        <div class="flex items-center gap-2 truncate">
-                            <span class="bg-cyOrange text-white text-[10px] font-bold px-1.5 py-0.5 rounded">RECENT</span>
-                            <span id="recent-post-notice" class="truncate">새 다이어리 글: "오늘도 미니홈피 꾸미는 중...!"</span>
-                        </div>
-                        <span class="text-[10px] text-orange-400 shrink-0">NEW!</span>
-                    </div>
-
-                    <!-- 픽셀 미니룸 (Miniroom Canvas) -->
-                    <div>
-                        <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-1">
-                            <span><i class="fa-solid fa-house-user text-cyOrange"></i> MINIROOM</span>
-                            <button onclick="changeMiniroomTheme()" class="text-[10px] text-slate-500 hover:text-cyOrange">
-                                <i class="fa-solid fa-palette"></i> 가구 테마 바꾸기
-                            </button>
-                        </div>
-                        <div id="miniroom-container" class="miniroom-bg w-full h-52 sm:h-64 rounded-xl border-2 border-slate-300 relative overflow-hidden flex items-end justify-center p-4">
-                            <!-- 방 배경 및 벽지 연출 -->
-                            <div class="absolute top-3 left-4 bg-white/80 border border-slate-300 rounded px-2 py-1 text-[11px] shadow-sm animate-float">
-                                💬 웰컴 투 마이 룸! 방명록 남겨주세요~
-                            </div>
-                            
-                            <!-- 창문 -->
-                            <div class="absolute top-4 right-6 w-16 h-20 bg-sky-200 border-2 border-amber-800 rounded flex flex-col justify-between p-1 shadow-inner">
-                                <div class="w-full h-1/2 border-b border-amber-800"></div>
-                                <span class="text-[10px] text-center">☁️</span>
-                            </div>
-
-                            <!-- 미니미 픽셀 캐릭터 & 카펫/가구 -->
-                            <div class="w-48 h-12 bg-amber-200/60 rounded-full border border-amber-300 absolute bottom-4 flex items-center justify-center shadow-inner"></div>
-
-                            <!-- 픽셀 아바타 (Mini-me) -->
-                            <div id="minime-avatar" class="relative z-10 flex flex-col items-center cursor-pointer transition hover:scale-110 mb-2" onclick="triggerMinimeAction()">
-                                <div id="avatar-speech" class="hidden absolute -top-8 bg-yellow-100 border border-amber-400 text-[10px] px-2 py-0.5 rounded-full text-amber-900 whitespace-nowrap shadow">
-                                    도토리 1개만... 🐿️
-                                </div>
-                                <div class="w-12 h-16 relative">
-                                    <!-- 픽셀 아바타 SVG graphics -->
-                                    <svg viewBox="0 0 64 64" class="w-full h-full drop-shadow">
-                                        <!-- Hair -->
-                                        <path d="M16 20 Q 32 8 48 20 Q 52 36 48 40 L 16 40 Z" fill="#3D2314"/>
-                                        <!-- Face -->
-                                        <circle cx="32" cy="28" r="14" fill="#FFE0BD"/>
-                                        <!-- Eyes -->
-                                        <circle cx="27" cy="27" r="2" fill="#000"/>
-                                        <circle cx="37" cy="27" r="2" fill="#000"/>
-                                        <!-- Cheeks -->
-                                        <circle cx="23" cy="30" r="2" fill="#FFB6C1"/>
-                                        <circle cx="41" cy="30" r="2" fill="#FFB6C1"/>
-                                        <!-- Mouth -->
-                                        <path d="M 29 33 Q 32 36 35 33" stroke="#D32F2F" stroke-width="1.5" fill="none"/>
-                                        <!-- Shirt -->
-                                        <path d="M 18 40 L 46 40 L 42 60 L 22 60 Z" fill="#FF6C00"/>
-                                        <!-- Pants -->
-                                        <path d="M 22 60 L 42 60 L 42 64 L 22 64 Z" fill="#333"/>
-                                    </svg>
-                                </div>
-                                <span class="text-[10px] font-bold bg-white/90 border border-slate-300 px-1.5 py-0.5 rounded-full mt-0.5 shadow-sm text-slate-800">
-                                    나(미니미)
-                                </span>
-                            </div>
-
-                            <!-- 가구 소품 (오디오, 곰인형) -->
-                            <div class="absolute bottom-5 left-6 text-2xl">📻</div>
-                            <div class="absolute bottom-5 right-8 text-2xl">🧸</div>
-                        </div>
-                    </div>
-
-                    <!-- 일촌평 (Ilchon Comments) 섹션 -->
-                    <div class="border-t border-slate-200 pt-3">
-                        <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-2">
-                            <span><i class="fa-solid fa-comments text-cyOrange"></i> 일촌평 (<span id="ilchonpyung-count">0</span>)</span>
-                            <span class="text-[10px] text-slate-400">일촌들과 나누는 한줄 수다</span>
-                        </div>
-
-                        <!-- 일촌평 입력폼 -->
-                        <div class="flex gap-1.5 mb-3 bg-slate-50 p-2 rounded-lg border border-slate-200">
-                            <input type="text" id="ilchon-nick-input" placeholder="일촌명(예: 길동이)" class="w-28 text-xs border border-slate-300 rounded px-2 py-1 outline-none">
-                            <input type="text" id="ilchon-msg-input" placeholder="일촌평을 남겨주세요 (최대 50자)" class="flex-1 text-xs border border-slate-300 rounded px-2 py-1 outline-none" maxlength="50" onkeyup="if(event.key==='Enter') addIlchonpyung()">
-                            <button onclick="addIlchonpyung()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-3 py-1 rounded font-bold transition">
-                                등록
-                            </button>
-                        </div>
-
-                        <!-- 일촌평 리스트 -->
-                        <div id="ilchonpyung-list" class="flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
-                            <!-- Dynamically added -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. DIARY TAB CONTENT -->
-                <div id="tab-diary" class="tab-content hidden flex-col gap-4">
-                    <div class="flex justify-between items-center border-b pb-2 border-slate-200">
-                        <span class="text-sm font-bold text-slate-800"><i class="fa-solid fa-book-open text-cyOrange"></i> DIARY</span>
-                        <button onclick="openDiaryModal()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-3 py-1.5 rounded font-bold flex items-center gap-1 shadow">
-                            <i class="fa-solid fa-pen-to-square"></i> 일기 쓰기
-                        </button>
-                    </div>
-
-                    <!-- 다이어리 레트로 달력 & 일기 목록 분할 -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- 레트로 달력 위젯 -->
-                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col items-center">
-                            <div class="flex justify-between items-center w-full text-xs font-bold text-slate-700 mb-2">
-                                <button onclick="changeMonth(-1)" class="text-slate-400 hover:text-cyOrange">&lt;</button>
-                                <span id="calendar-month-year">2004. 10</span>
-                                <button onclick="changeMonth(1)" class="text-slate-400 hover:text-cyOrange">&gt;</button>
-                            </div>
-                            <div class="grid grid-cols-7 gap-1 text-center text-[11px] w-full font-bold text-slate-500 mb-1">
-                                <span class="text-red-500">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="text-blue-500">토</span>
-                            </div>
-                            <div id="calendar-days" class="grid grid-cols-7 gap-1 text-center text-xs w-full">
-                                <!-- Dynamically generated -->
-                            </div>
-                        </div>
-
-                        <!-- 일기 리스트 표시 -->
-                        <div class="md:col-span-2 flex flex-col gap-3 max-h-[380px] overflow-y-auto pr-1" id="diary-list">
-                            <!-- Dynamically loaded -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. PHOTO ALBUM TAB CONTENT -->
-                <div id="tab-photo" class="tab-content hidden flex-col gap-4">
-                    <div class="flex justify-between items-center border-b pb-2 border-slate-200">
-                        <span class="text-sm font-bold text-slate-800"><i class="fa-solid fa-camera-retro text-cyOrange"></i> PHOTO ALBUM</span>
-                        <button onclick="openPhotoModal()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-3 py-1.5 rounded font-bold flex items-center gap-1 shadow">
-                            <i class="fa-solid fa-plus"></i> 사진 올리기
-                        </button>
-                    </div>
-
-                    <!-- 사진 갤러리 그리드 -->
-                    <div id="photo-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[420px] overflow-y-auto pr-1">
-                        <!-- Dynamically loaded -->
-                    </div>
-                </div>
-
-                <!-- 4. GUESTBOOK TAB CONTENT -->
-                <div id="tab-guest" class="tab-content hidden flex-col gap-4">
-                    <div class="flex justify-between items-center border-b pb-2 border-slate-200">
-                        <span class="text-sm font-bold text-slate-800"><i class="fa-solid fa-book-bookmark text-cyOrange"></i> GUESTBOOK (방명록)</span>
-                        <span class="text-xs text-slate-400">자유롭게 글을 남겨주세요!</span>
-                    </div>
-
-                    <!-- 방명록 작성 박스 -->
-                    <div class="bg-cyOrangeSoft border border-orange-200 rounded-xl p-3 flex flex-col gap-2">
-                        <div class="flex flex-wrap items-center justify-between gap-2">
-                            <div class="flex items-center gap-2 text-xs">
-                                <span class="font-bold text-slate-700">작성자:</span>
-                                <input type="text" id="guest-name-input" placeholder="이름/일촌명" class="w-28 text-xs border border-orange-300 rounded px-2 py-1 outline-none bg-white">
-                                <label class="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
-                                    <input type="checkbox" id="guest-secret-check" class="rounded accent-cyOrange"> 비밀글 🔒
-                                </label>
-                            </div>
-                            <!-- 아바타 아이콘 선택 -->
-                            <div class="flex items-center gap-1 text-xs">
-                                <span class="text-[11px] text-slate-500">미니미:</span>
-                                <select id="guest-avatar-select" class="text-xs bg-white border border-orange-300 rounded px-1 py-0.5">
-                                    <option value="👦">👦 소년</option>
-                                    <option value="👧">👧 소녀</option>
-                                    <option value="🐱">🐱 고양이</option>
-                                    <option value="🐶">🐶 강아지</option>
-                                    <option value="🐰">🐰 토끼</option>
-                                </select>
-                            </div>
-                        </div>
-                        <textarea id="guest-msg-input" rows="3" placeholder="남길 소중한 메시지를 입력하세요... (퍼가요~♡)" class="w-full text-xs border border-orange-300 rounded p-2 outline-none resize-none bg-white"></textarea>
-                        <div class="flex justify-end">
-                            <button onclick="addGuestbookEntry()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-4 py-1.5 rounded font-bold shadow transition flex items-center gap-1">
-                                <i class="fa-solid fa-check"></i> 방명록 남기기
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 방명록 글 목록 -->
-                    <div id="guestbook-list" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-1">
-                        <!-- Dynamically generated -->
-                    </div>
-                </div>
-
-            </main>
-
-            <!-- [우측 네비게이션 탭 (Cyworld Classic Side Tabs)] -->
-            <nav class="flex md:flex-col gap-1 mt-2 md:mt-0 md:-mr-9 z-20 shrink-0">
-                <button onclick="switchTab('home')" id="tab-btn-home" class="cy-tab active text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
-                    홈
+            <!-- Bottom Actions -->
+            <div class="flex justify-between items-center pt-3 border-t border-amber-900/10 gap-2">
+                <button onclick="showReviewScreen()" class="btn-push bg-amber-700 hover:bg-amber-800 text-white font-jua text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> 오답노트 복습하기 (<span id="wrong-count">0</span>)
                 </button>
-                <button onclick="switchTab('diary')" id="tab-btn-diary" class="cy-tab text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
-                    다이어리
+                <button onclick="resetAllProgress()" class="text-xs text-slate-500 hover:text-red-600 underline">
+                    초기화
                 </button>
-                <button onclick="switchTab('photo')" id="tab-btn-photo" class="cy-tab text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
-                    사진첩
+            </div>
+        </section>
+
+        <!-- 2. QUIZ PLAY SCREEN -->
+        <section id="screen-quiz" class="w-full trad-card p-4 sm:p-6 flex-col gap-4 hidden">
+            <!-- Quiz Progress & Era Header -->
+            <div class="flex justify-between items-center border-b-2 border-dashed border-amber-800/20 pb-3">
+                <div class="flex items-center gap-2">
+                    <span id="quiz-era-badge" class="bg-amber-800 text-amber-100 font-jua text-xs px-2.5 py-1 rounded-lg">
+                        1시대
+                    </span>
+                    <h3 id="quiz-era-title" class="font-jua text-sm sm:text-base text-slate-800">
+                        건국과 기틀 마련
+                    </h3>
+                </div>
+                <div class="font-jua text-xs sm:text-sm text-amber-900">
+                    문제 <span id="quiz-current-num" class="text-joseonRed text-base">1</span> / <span id="quiz-total-num">3</span>
+                </div>
+            </div>
+
+            <!-- Mascot Speech / Encourage Box -->
+            <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
+                <div id="mascot-avatar" class="text-3xl shrink-0 animate-bounce-slow">
+                    🧙‍♂️
+                </div>
+                <div id="mascot-msg" class="text-xs sm:text-sm font-batang text-amber-900 leading-snug">
+                    "문제를 잘 읽고 정답을 골라봐! 힌트가 필요하면 교과서 개념을 떠올려봐!"
+                </div>
+            </div>
+
+            <!-- Quiz Question Box -->
+            <div class="bg-white border-2 border-amber-800/30 rounded-2xl p-4 sm:p-5 shadow-inner flex flex-col gap-3">
+                <div class="flex items-start gap-2">
+                    <span id="quiz-type-tag" class="bg-joseonBlue text-white font-jua text-[11px] px-2 py-0.5 rounded shrink-0 mt-0.5">
+                        4지선다
+                    </span>
+                    <h2 id="quiz-question" class="font-jua text-base sm:text-lg text-slate-900 leading-snug">
+                        질문 텍스트가 들어갑니다.
+                    </h2>
+                </div>
+                <!-- Clue Image/Box if available -->
+                <div id="quiz-clue-box" class="hidden bg-amber-50/80 border border-amber-200 p-3 rounded-xl text-xs sm:text-sm text-amber-900 font-batang italic text-center">
+                    <!-- Dynamic Clue -->
+                </div>
+            </div>
+
+            <!-- Quiz Options Box -->
+            <div id="quiz-options-box" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-1">
+                <!-- Dynamic Options Buttons -->
+            </div>
+
+            <!-- Quiz Answer Feedback & Explanation Modal/Box (Initially Hidden) -->
+            <div id="quiz-explanation-box" class="hidden bg-emerald-50 border-2 border-emerald-400 rounded-xl p-4 flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <span id="result-icon" class="text-xl">✅</span>
+                    <h4 id="result-title" class="font-jua text-base text-emerald-900">정답입니다! (+10점)</h4>
+                </div>
+                <p id="explanation-text" class="text-xs sm:text-sm font-batang text-slate-700 leading-relaxed">
+                    해설 설명이 이곳에 작성됩니다.
+                </p>
+                <button id="btn-next-quiz" onclick="nextQuizQuestion()" class="btn-push self-end bg-joseonGreen hover:bg-emerald-700 text-white font-jua text-xs sm:text-sm px-5 py-2 rounded-xl mt-1">
+                    다음 문제로 이동 <i class="fa-solid fa-arrow-right ml-1"></i>
                 </button>
-                <button onclick="switchTab('guest')" id="tab-btn-guest" class="cy-tab text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
-                    방명록
+            </div>
+        </section>
+
+        <!-- 3. ERA CLEAR SCREEN -->
+        <section id="screen-era-clear" class="w-full trad-card p-6 flex-col items-center text-center gap-5 hidden">
+            <div class="text-6xl animate-bounce-slow">🎉</div>
+            <div>
+                <span id="clear-era-name" class="bg-amber-200 text-amber-900 font-jua text-xs px-3 py-1 rounded-full">
+                    제 1시대
+                </span>
+                <h2 class="font-jua text-2xl sm:text-3xl text-amber-900 mt-2">시대 클리어 완료!</h2>
+                <p class="text-xs sm:text-sm text-slate-600 font-batang mt-1">
+                    축하합니다! 해당 시대의 모든 역사 퀴즈를 훌륭하게 완수하셨습니다.
+                </p>
+            </div>
+
+            <!-- Earned Badge Display -->
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 w-full max-w-sm flex flex-col items-center gap-2">
+                <span class="text-xs font-jua text-amber-800">새로 획득한 역사 훈장</span>
+                <div id="clear-badge-icon" class="text-5xl my-1">🥇</div>
+                <div id="clear-badge-name" class="font-jua text-lg text-slate-800">조선 건국 탐험가</div>
+            </div>
+
+            <button onclick="showHomeScreen()" class="btn-push bg-joseonBlue hover:bg-blue-700 text-white font-jua text-base px-8 py-3 rounded-2xl">
+                타임라인 지도로 돌아가기
+            </button>
+        </section>
+
+        <!-- 4. REVIEW MODE (Wrong Questions) SCREEN -->
+        <section id="screen-review" class="w-full trad-card p-4 sm:p-6 flex-col gap-4 hidden">
+            <div class="flex justify-between items-center border-b-2 border-dashed border-amber-800/20 pb-3">
+                <h3 class="font-jua text-base sm:text-lg text-slate-800 flex items-center gap-2">
+                    <span>📖</span> 오답노트 (복습 모드)
+                </h3>
+                <button onclick="showHomeScreen()" class="text-xs text-slate-500 hover:text-slate-800 font-jua">
+                    <i class="fa-solid fa-house"></i> 메인으로
                 </button>
-            </nav>
-        </div>
-    </div>
+            </div>
 
-    <!-- ===== MODALS ===== -->
+            <div id="review-list-container" class="flex flex-col gap-3 max-h-[420px] overflow-y-auto pr-1">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
 
-    <!-- 다이어리 작성 모달 -->
-    <div id="modal-diary" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl border-4 border-cyOrange w-full max-w-md p-4 shadow-2xl flex flex-col gap-3">
-            <div class="flex justify-between items-center border-b pb-2">
-                <span class="font-bold text-sm text-cyOrange"><i class="fa-solid fa-pen"></i> 새로운 일기 쓰기</span>
-                <button onclick="closeModal('modal-diary')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <input type="text" id="new-diary-title" placeholder="일기 제목" class="text-xs border border-slate-300 rounded p-2 outline-none">
-            <div class="flex gap-2">
-                <select id="new-diary-weather" class="text-xs border border-slate-300 rounded p-1.5 flex-1">
-                    <option value="맑음 ☀️">날씨: 맑음 ☀️</option>
-                    <option value="비 ☔">날씨: 비 ☔</option>
-                    <option value="구름 ☁️">날씨: 구름 ☁️</option>
-                    <option value="눈 ❄️">날씨: 눈 ❄️</option>
-                </select>
-                <select id="new-diary-mood" class="text-xs border border-slate-300 rounded p-1.5 flex-1">
-                    <option value="행복 🥰">기분: 행복 🥰</option>
-                    <option value="감성적 🌙">기분: 감성적 🌙</option>
-                    <option value="신남 🎵">기분: 신남 🎵</option>
-                    <option value="우울 💧">기분: 우울 💧</option>
-                </select>
-            </div>
-            <textarea id="new-diary-content" rows="6" placeholder="오늘 있었던 일이나 생각한 일들을 남겨보세요..." class="text-xs border border-slate-300 rounded p-2 outline-none resize-none"></textarea>
-            <div class="flex justify-end gap-2">
-                <button onclick="closeModal('modal-diary')" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs rounded">취소</button>
-                <button onclick="saveDiaryPost()" class="px-4 py-1.5 bg-cyOrange text-white text-xs font-bold rounded hover:bg-cyOrangeLight">저장하기</button>
-            </div>
-        </div>
-    </div>
+    </main>
 
-    <!-- 사진 업로드 모달 -->
-    <div id="modal-photo" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl border-4 border-cyOrange w-full max-w-md p-4 shadow-2xl flex flex-col gap-3">
-            <div class="flex justify-between items-center border-b pb-2">
-                <span class="font-bold text-sm text-cyOrange"><i class="fa-solid fa-image"></i> 사진 올리기</span>
-                <button onclick="closeModal('modal-photo')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <input type="text" id="new-photo-title" placeholder="사진 제목" class="text-xs border border-slate-300 rounded p-2 outline-none">
-            <input type="text" id="new-photo-url" placeholder="이미지 URL (비워두면 기본 추억 사진 적용)" class="text-xs border border-slate-300 rounded p-2 outline-none">
-            <textarea id="new-photo-desc" rows="3" placeholder="사진에 대한 설명을 남겨주세요 (예: 2004년 여름 한강에서 찍은 사진!)" class="text-xs border border-slate-300 rounded p-2 outline-none resize-none"></textarea>
-            <div class="flex justify-end gap-2">
-                <button onclick="closeModal('modal-photo')" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs rounded">취소</button>
-                <button onclick="savePhotoPost()" class="px-4 py-1.5 bg-cyOrange text-white text-xs font-bold rounded hover:bg-cyOrangeLight">올리기</button>
-            </div>
-        </div>
-    </div>
+    <!-- Footer -->
+    <footer class="mt-4 text-center text-xs text-slate-600 font-batang">
+        초등학교 5학년 사회(역사) 교과과정 연계 퀴즈 프로그램
+    </footer>
 
-    <!-- JAVASCRIPT LOGIC Persisted in LocalStorage -->
     <script>
-        // Web Audio Synth BGM generator (Retro Chiptune Sound Engine)
+        // Web Audio API Sound Engine
         let audioCtx = null;
-        let isPlayingBGM = false;
-        let bgmTimer = null;
-        let currentBgmIndex = 0;
-
-        const bgmPlaylist = [
-            { title: "프리스타일 - Y (FT. 호연주)", notes: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25] },
-            { title: "YUI - Goodbye Days", notes: [329.63, 392.00, 440.00, 392.00, 329.63, 293.66, 261.63] },
-            { title: "윤도현 - 사랑했나봐", notes: [392.00, 440.00, 523.25, 440.00, 392.00, 349.23, 329.63] },
-            { title: "MC몽 - I Love U Oh Thank U", notes: [523.25, 493.88, 440.00, 392.00, 440.00, 493.88, 523.25] }
-        ];
-
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        // 레트로 팝 사운드 효과음
-        function playSound(type = 'click') {
+        function playSound(type) {
             initAudio();
             if (!audioCtx) return;
-
+            const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(audioCtx.destination);
 
-            const now = audioCtx.currentTime;
-
-            if (type === 'click') {
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(180, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'click') {
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(600, now);
-                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
-                gain.gain.setValueAtTime(0.15, now);
+                osc.frequency.setValueAtTime(440, now);
+                gain.gain.setValueAtTime(0.1, now);
                 gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
                 osc.start(now);
                 osc.stop(now + 0.05);
-            } else if (type === 'tab') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
-                osc.start(now);
-                osc.stop(now + 0.08);
+            } else if (type === 'fanfare') {
+                const notes = [440, 554.37, 659.25, 880];
+                notes.forEach((freq, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.type = 'triangle';
+                    o.frequency.setValueAtTime(freq, now + (i * 0.12));
+                    g.gain.setValueAtTime(0.2, now + (i * 0.12));
+                    g.gain.linearRampToValueAtTime(0.01, now + (i * 0.12) + 0.3);
+                    o.start(now + (i * 0.12));
+                    o.stop(now + (i * 0.12) + 0.3);
+                });
             }
         }
 
-        function toggleBGM() {
-            initAudio();
-            isPlayingBGM = !isPlayingBGM;
-            const icon = document.getElementById('bgm-icon');
-
-            if (isPlayingBGM) {
-                icon.className = 'fa-solid fa-pause';
-                playRetroMelody();
-            } else {
-                icon.className = 'fa-solid fa-play';
-                if (bgmTimer) clearInterval(bgmTimer);
+        // HISTORICAL DATABASE (Chronological order aligned with 5th grade curriculum)
+        const erasData = [
+            {
+                id: 1,
+                title: "1. 건국과 기틀 마련",
+                period: "1392년 ~ 15세기",
+                icon: "👑",
+                badgeIcon: "🏹",
+                badgeName: "조선 건국 탐험가",
+                desc: "태조 이성계의 조선 건국, 한양 수도 이전, 세종대왕의 훈민정음 창제와 과학 발전",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "1392년 고려를 무너뜨리고 '조선'을 세운 왕은 누구일까요?",
+                        clue: "💡 힌트: 신진사대부 정도전과 함께 위화도 회군을 이끌었던 장군 출신의 왕이에요.",
+                        options: ["태조 이성계", "세종대왕", "태종 이방원", "영조"],
+                        answer: 0,
+                        explanation: "태조 이성계는 1392년에 조선을 건국하고, 1394년 수도를 한양(지금의 서울)으로 옮겨 나라의 기틀을 마련했습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "조선의 수도인 '한양'은 유교 덕목인 인·의·예·지·신을 바탕으로 4대문(흥인지문, 숭례문 등)을 세웠다.",
+                        clue: "💡 힌트: 도성의 문 이름에는 유교의 기본 덕목이 들어가 있어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 한양 도성은 동쪽 흥인지문(인), 서쪽 돈의문(의), 남쪽 숭례문(예), 북쪽 숙정문(지) 등 유교적 정신을 담아 건립되었습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "백성들이 글을 몰라 겪는 어려움을 불쌍히 여겨 1443년에 '훈민정음(한글)'을 창제한 왕은 누구일까요?",
+                        clue: "💡 힌트: 집현전 학자들과 함께 학문을 연구하고 과학 기술을 발전시켰어요.",
+                        options: ["정조", "세종대왕", "광해군", "성종"],
+                        answer: 1,
+                        explanation: "세종대왕은 백성을 사랑하는 마음으로 훈민정음을 만들었습니다. 또한 측우기, 해시계(앙부일구), 자격루 등의 과학 기구 제작도 지원했습니다."
+                    },
+                    {
+                        type: "유물/인물 match",
+                        question: "노비 출신이었지만 뛰어난 재능으로 세종대왕의 발탁을 받아 해시계(앙부일구)와 측우기를 만든 과학자는 누구일까요?",
+                        clue: "💡 힌트: 물시계인 '자격루'를 만들어 자동으로 시간이 알려지도록 했어요.",
+                        options: ["장영실", "김정호", "이순신", "정약용"],
+                        answer: 0,
+                        explanation: "장영실은 노비 신분이었으나 세종대왕에 의해 능력을 인정받아 벼슬을 얻고, 조선의 뛰어난 과학 기술 발전에 큰 기여를 했습니다."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "2. 조선의 시련과 극복",
+                period: "16세기 말 ~ 17세기",
+                icon: "⚔️",
+                badgeIcon: "🐢",
+                badgeName: "구국의 수호자",
+                desc: "임진왜란과 이순신 장군의 한산도·명량 대첩, 병자호란과 광해군의 중립 외교",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "1592년 일본(왜)이 조선을 침략하여 일어난 전쟁의 이름은 무엇일까요?",
+                        clue: "💡 힌트: 7년 동안 이어진 큰 전쟁으로 곽재우 등 의병들도 활약했어요.",
+                        options: ["병자호란", "임진왜란", "귀주대첩", "살수대첩"],
+                        answer: 1,
+                        explanation: "1592년 선조 때 일어난 임진왜란은 7년 동안 계속되었으며, 이순신 장군의 수군과 전국 각지의 의병들이 목숨을 바쳐 나라를 구했습니다."
+                    },
+                    {
+                        type: "유물/인물 match",
+                        question: "거북선(귀선)을 만들어 한산도 대첩, 명량 대첩 등 바다에서 일본군을 대파한 장군은 누구일까요?",
+                        clue: "💡 힌트: '신에게는 아직 12척의 배가 남아있사옵니다'라는 말을 남겼어요.",
+                        options: ["김유신", "이순신", "강감찬", "권율"],
+                        answer: 1,
+                        explanation: "충무공 이순신 장군은 철저한 준비와 탁월한 지략, 거북선 활용으로 조선의 바다를 지켜내 왜군의 물자 공급을 차단했습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "광해군은 명나라와 후금 사이에서 전쟁에 휘말리지 않기 위해 '중립 외교'를 펼쳤다.",
+                        clue: "💡 힌트: 실리를 중시하여 나라의 평화를 지키려 노력했어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 광해군은 새로 성장하는 후금과 저물어가는 명나라 사이에서 현실적인 중립 외교를 펼쳐 전쟁의 피해를 막고자 했습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "1636년 청나라가 조선을 침략하여 인조가 남한산성에서 항전하다가 굴복한 사건은 무엇일까요?",
+                        clue: "💡 힌트: 삼전도의 굴욕이라고도 부르는 추운 겨울의 전쟁이에요.",
+                        options: ["임진왜란", "병자호란", "정묘호란", "홍경래의 난"],
+                        answer: 1,
+                        explanation: "병자호란(1636년)은 청나라의 침략으로 인조가 남한산성에서 항전했으나 물자가 부족해 결국 삼전도에서 청나라와 신하의 예을 맺게 된 아픈 역사입니다."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "3. 조선의 부흥과 변화",
+                period: "18세기",
+                icon: "📚",
+                badgeIcon: "🏰",
+                badgeName: "실용과 개혁의 학자",
+                desc: "영조·정조의 탕평책, 정약용과 거중기를 이용한 수원 화성 건축, 김정호의 대동여지도",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "신하들 사이의 붕당 갈등을 줄이고 골고루 인재를 등용하기 위해 영조와 정조가 실시한 정책은 무엇일까요?",
+                        clue: "💡 힌트: '한쪽으로 치우치지 않고 공평하게' 한다는 뜻이에요.",
+                        options: ["탕평책", "대동법", "과전법", "신문고"],
+                        answer: 0,
+                        explanation: "영조와 정조는 특정 붕당에 편중되지 않고 능력이 있는 인재를 두루 등용하는 '탕평책'을 펼쳐 정치를 안정시키고 문화를 발전시켰습니다."
+                    },
+                    {
+                        type: "유물/인물 match",
+                        question: "정조 때 실학자 정약용이 무거운 돌을 쉽게 올리기 위해 도르래의 원리를 이용해 만든 도구는 무엇일까요?",
+                        clue: "💡 힌트: 이 도구 덕분에 수원 화성을 훨씬 빠르고 안전하게 쌓을 수 있었어요.",
+                        options: ["거중기", "측우기", "자격루", "혼천의"],
+                        answer: 0,
+                        explanation: "정약용이 발명한 '거중기'는 도르래 원리를 이용해 적은 힘으로도 무거운 돌을 들 수 있게 하여 수원 화성 공사 기간과 비용을 크게 줄였습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "조선 후기 백성들의 삶에 도움이 되는 실용적인 학문인 '실학'이 발전하였다.",
+                        clue: "💡 힌트: 실사구시(사실에 바탕을 두고 진리를 탐구함) 정신이 강조되었어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 실학자들은 학문에만 치중하던 기존 성리학에서 벗어나 농업 발전, 상공업 육성, 역사 및 지리 연구 등 실제 생활에 도움 되는 학문을 연구했습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "조선 전도를 직접 발로 뛰며 조사하여 만든 대형 지도인 '대동여지도'를 제작한 인물은 누구일까요?",
+                        clue: "💡 힌트: 목판으로 인쇄하여 누구나 쉽게 가지고 다닐 수 있게 접이식으로 만들었어요.",
+                        options: ["김정호", "정약용", "박지원", "김홍도"],
+                        answer: 0,
+                        explanation: "고산자 김정호는 우리나라 산맥과 물길, 도로망이 정밀하게 표시된 목판본 지도인 '대동여지도'를 완성했습니다."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "4. 조선 후기와 개항",
+                period: "19세기 말",
+                icon: "⚓",
+                badgeIcon: "📜",
+                badgeName: "조선 역사 마스터",
+                desc: "흥선대원군의 통상 수교 거부 정책, 최초의 근대적 불평등 조약인 강화도 조약과 개화 운동",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "고종의 아버지로서 서원 철폐, 척화비 세우기, 경복궁 중건 등을 추진한 인물은 누구일까요?",
+                        clue: "💡 힌트: 서양 세력의 침략에 맞서 통상 수교 거부 정책을 펼쳤어요.",
+                        options: ["흥선대원군", "정약용", "김옥균", "고종"],
+                        answer: 0,
+                        explanation: "흥선대원군은 세도 정치의 폐단을 바로잡고 왕권을 강화하기 위해 노력했으며, 프랑스·미국의 침략(병인양요·신미양요)에 맞서 척화비를 세웠습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "1876년에 체결된 '강화도 조약'은 우리나라 최초의 근대적 조약이자 일본에 유리한 불평등 조약이었다.",
+                        clue: "💡 힌트: 운요호 사건을 계기로 해안 측량권 등이 일본에 개방되었어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 강화도 조약으로 부산, 원산, 인천 항구가 개항되었지만, 해안 측량권과 영사 재판권 등 일본에 유리한 조항이 담긴 불평등 조약이었습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "조선이 서양의 문물과 제도를 받아들여 나라를 발전시키자고 주장한 사람들을 무엇이라 부를까요?",
+                        clue: "💡 힌트: 우정총국 개국 잔치 때 갑신정변을 일으키기도 했어요.",
+                        options: ["개화파", "위정척사파", "붕당", "의병"],
+                        answer: 0,
+                        explanation: "김옥균, 박영효 등의 개화파는 근대 문물을 적극 도입하여 근대 국가로 나아가고자 이선 노력을 기울였습니다."
+                    }
+                ]
             }
-        }
+        ];
 
-        function changeBGM(val) {
-            currentBgmIndex = parseInt(val);
-            document.getElementById('bgm-title').innerText = bgmPlaylist[currentBgmIndex].title;
-            if (isPlayingBGM) {
-                if (bgmTimer) clearInterval(bgmTimer);
-                playRetroMelody();
-            }
-        }
-
-        function playRetroMelody() {
-            if (!audioCtx) return;
-            const notes = bgmPlaylist[currentBgmIndex].notes;
-            let noteIdx = 0;
-
-            bgmTimer = setInterval(() => {
-                if (!isPlayingBGM) return;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(notes[noteIdx], audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.25);
-
-                noteIdx = (noteIdx + 1) % notes.length;
-            }, 350);
-        }
-
-        // ----- DATA PERSISTENCE (LocalStorage) -----
-        const storageKey = 'cyworld_minihomepage_data_v1';
-
-        const defaultData = {
-            title: "★~ 난... ㄱ├끔 눈물을 흘린ㄷ├... ~★",
-            bio: "퍼가요~♡\n2000년대 감성 충만했던 그 시절.\n음악 들으면서 도토리 선물받던 미니홈피에 오신 걸 환영합니다!\n일촌평 많이 남겨주세요...★",
-            mood: "맑음 ☀️",
-            profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
-            ilchonpyung: [
-                { id: 1, nick: "★길동이★", msg: "퍼가요~♡ 퍼갈 땐 댓글 필수인 거 알지?", date: "2004.10.14" },
-                { id: 2, nick: "영희공주", msg: "오늘 미니룸 완죤 예쁘게 꾸몄네 >_<", date: "2004.10.15" }
-            ],
-            diaries: [
-                { id: 1, title: "싸이월드 미니홈피 오픈!", weather: "맑음 ☀️", mood: "신남 🎵", content: "드디어 내 미니홈피 개장했다! 도토리 장전 완료 ㅋㅋ 다들 방명록 남겨줘~", date: "2004.10.12 15:30" },
-                { id: 2, title: "오늘의 감성 한 조각...", weather: "비 ☔", mood: "감성적 🌙", content: "비가 오는 날엔 YUI 노래를 들으며 일기를 쓴다... 난 ㄱ├끔 눈물을 흘린다...", date: "2004.10.15 21:10" }
-            ],
-            photos: [
-                { id: 1, title: "2004년 한강 나들이 📸", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80", desc: "날씨 좋았던 가을날! 한강에서 치킨 먹던 날 추억돋네 ㅎㅎ", date: "2004.10.10" },
-                { id: 2, title: "우리의 아지트 미니룸!", url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600&auto=format&fit=crop&q=80", desc: "도토리 50개 들여서 새로 세팅한 거실 배치 어떤가요?!", date: "2004.10.13" }
-            ],
-            guestbook: [
-                { id: 1, name: "철수대장", avatar: "👦", secret: false, msg: "야 일촌신청 받아라! 파도타기 타고 들어옴 ㅋㅋㅋ", date: "2004.10.15 11:20" },
-                { id: 2, name: "민수짱", avatar: "🐱", secret: true, msg: "비밀글입니다 🔒 (너 어제 버디버디 로그인 안 했더라?)", date: "2004.10.15 14:05" }
-            ]
+        // State Management stored in localStorage
+        const STORAGE_KEY = 'joseon_history_quiz_v1';
+        let userProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+            score: 0,
+            clearedEras: [], // array of era IDs
+            wrongQuizzes: [] // list of wrong quiz items
         };
 
-        let cyData = JSON.parse(localStorage.getItem(storageKey)) || defaultData;
+        let currentEra = null;
+        let currentQuizIndex = 0;
+        let selectedOption = null;
 
-        function saveData() {
-            localStorage.setItem(storageKey, JSON.stringify(cyData));
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+            updateHeaderStats();
         }
 
-        // ----- TAB NAVIGATION -----
-        function switchTab(tabName) {
-            playSound('tab');
-            document.querySelectorAll('.tab-content').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('flex');
-            });
-            document.querySelectorAll('.cy-tab').forEach(el => el.classList.remove('active'));
-
-            const targetContent = document.getElementById(`tab-${tabName}`);
-            const targetBtn = document.getElementById(`tab-btn-${tabName}`);
-
-            if (targetContent) {
-                targetContent.classList.remove('hidden');
-                targetContent.classList.add('flex');
-            }
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            }
+        function updateHeaderStats() {
+            document.getElementById('header-score').innerText = userProgress.score;
+            document.getElementById('header-badges').innerText = userProgress.clearedEras.length;
+            document.getElementById('wrong-count').innerText = userProgress.wrongQuizzes.length;
         }
 
-        // ----- EDIT FUNCTIONS -----
-        function editHomepageTitle() {
+        // NAVIGATION LOGIC
+        function showHomeScreen() {
             playSound('click');
-            const newTitle = prompt("미니홈피 타이틀을 입력하세요:", cyData.title);
-            if (newTitle && newTitle.trim() !== "") {
-                cyData.title = newTitle.trim();
-                document.getElementById('homepage-title').innerText = cyData.title;
-                saveData();
-            }
+            document.getElementById('screen-home').classList.remove('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('flex');
+            document.getElementById('screen-era-clear').classList.add('hidden');
+            document.getElementById('screen-era-clear').classList.remove('flex');
+            document.getElementById('screen-review').classList.add('hidden');
+            document.getElementById('screen-review').classList.remove('flex');
+            renderEraCards();
+            updateHeaderStats();
         }
 
-        function editBio() {
-            playSound('click');
-            const newBio = prompt("프로필 소개글을 입력하세요:", cyData.bio);
-            if (newBio !== null) {
-                cyData.bio = newBio;
-                document.getElementById('profile-bio').innerText = cyData.bio;
-                saveData();
-            }
-        }
+        function renderEraCards() {
+            const container = document.getElementById('era-card-container');
+            container.innerHTML = '';
 
-        function saveMood(val) {
-            playSound('click');
-            cyData.mood = val;
-            saveData();
-        }
+            erasData.forEach((era) => {
+                const isCleared = userProgress.clearedEras.includes(era.id);
+                const isUnlocked = era.id === 1 || userProgress.clearedEras.includes(era.id - 1);
 
-        function changeProfileImg() {
-            playSound('click');
-            const url = prompt("새 프로필 이미지 URL을 입력하세요:", cyData.profileImg);
-            if (url) {
-                cyData.profileImg = url;
-                document.getElementById('profile-img').src = url;
-                saveData();
-            }
-        }
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl border-2 transition flex flex-col justify-between gap-3 ${
+                    isCleared 
+                    ? 'bg-emerald-50 border-emerald-500 shadow-sm' 
+                    : isUnlocked 
+                    ? 'bg-white border-amber-800/40 hover:border-amber-800 hover:shadow-md cursor-pointer' 
+                    : 'bg-slate-100 border-slate-300 opacity-60 cursor-not-allowed'
+                }`;
 
-        function visitIlchon(name) {
-            if (!name) return;
-            playSound('click');
-            alert(`[파도타기 🏄‍♂️]\n'${name}' 님의 미니홈피로 이동합니다! (가상 이동)`);
-            document.getElementById('ilchon-select').value = "";
-        }
-
-        function triggerMinimeAction() {
-            playSound('click');
-            const speech = document.getElementById('avatar-speech');
-            speech.classList.remove('hidden');
-            setTimeout(() => {
-                speech.classList.add('hidden');
-            }, 2500);
-        }
-
-        function changeMiniroomTheme() {
-            playSound('click');
-            const bg = document.getElementById('miniroom-container');
-            const themes = ['#EAF4FA', '#FFF0F5', '#F0FFF0', '#FFFDE7'];
-            const randomBg = themes[Math.floor(Math.random() * themes.length)];
-            bg.style.backgroundColor = randomBg;
-        }
-
-        // ----- ILCHONPYUNG (HOME) -----
-        function renderIlchonpyung() {
-            const list = document.getElementById('ilchonpyung-list');
-            document.getElementById('ilchonpyung-count').innerText = cyData.ilchonpyung.length;
-            list.innerHTML = '';
-
-            cyData.ilchonpyung.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between text-xs bg-slate-50 p-2 rounded border border-slate-200 dotted-line';
-                div.innerHTML = `
-                    <div class="flex items-center gap-2 truncate">
-                        <span class="font-bold text-cyOrange shrink-0">• ${escapeHtml(item.nick)}</span>
-                        <span class="text-slate-700 truncate">${escapeHtml(item.msg)}</span>
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl sm:text-4xl p-2 bg-amber-100/60 rounded-xl border border-amber-300/50">${era.icon}</span>
+                            <div>
+                                <span class="text-[10px] font-jua bg-amber-800/10 text-amber-900 px-2 py-0.5 rounded">${era.period}</span>
+                                <h4 class="font-jua text-base sm:text-lg text-slate-800 mt-0.5">${era.title}</h4>
+                            </div>
+                        </div>
+                        ${isCleared ? `<span class="text-2xl" title="훈장 획득!">${era.badgeIcon}</span>` : ''}
                     </div>
-                    <div class="flex items-center gap-2 shrink-0 text-[10px] text-slate-400">
-                        <span>(${item.date})</span>
-                        <button onclick="deleteIlchonpyung(${item.id})" class="hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                    <p class="text-xs text-slate-600 font-batang leading-relaxed">${era.desc}</p>
+                    <div class="flex items-center justify-between border-t border-slate-200/60 pt-2.5 mt-1">
+                        <span class="text-[11px] font-jua text-slate-500">문제 수: ${era.quizzes.length}문항</span>
+                        ${
+                            isCleared 
+                            ? `<button onclick="startQuiz(${era.id})" class="btn-push bg-emerald-600 hover:bg-emerald-700 text-white font-jua text-xs px-3 py-1.5 rounded-xl">다시 풀기</button>` 
+                            : isUnlocked 
+                            ? `<button onclick="startQuiz(${era.id})" class="btn-push bg-joseonRed hover:bg-red-700 text-white font-jua text-xs px-4 py-1.5 rounded-xl">도전하기 🚀</button>` 
+                            : `<span class="text-xs font-jua text-slate-400">🔒 이전 시대 완료 필요</span>`
+                        }
                     </div>
                 `;
-                list.appendChild(div);
+
+                container.appendChild(card);
             });
         }
 
-        function addIlchonpyung() {
+        // QUIZ PLAY LOGIC
+        function startQuiz(eraId) {
             playSound('click');
-            const nickInput = document.getElementById('ilchon-nick-input');
-            const msgInput = document.getElementById('ilchon-msg-input');
+            currentEra = erasData.find(e => e.id === eraId);
+            currentQuizIndex = 0;
 
-            if (!nickInput.value.trim() || !msgInput.value.trim()) {
-                alert("일촌명과 내용을 모두 입력해주세요!");
-                return;
-            }
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            document.getElementById('screen-quiz').classList.add('flex');
 
-            const newEntry = {
-                id: Date.now(),
-                nick: nickInput.value.trim(),
-                msg: msgInput.value.trim(),
-                date: new Date().toISOString().split('T')[0].replace(/-/g, '.')
-            };
-
-            cyData.ilchonpyung.unshift(newEntry);
-            saveData();
-            renderIlchonpyung();
-
-            msgInput.value = '';
+            loadCurrentQuizQuestion();
         }
 
-        function deleteIlchonpyung(id) {
-            playSound('click');
-            cyData.ilchonpyung = cyData.ilchonpyung.filter(i => i.id !== id);
-            saveData();
-            renderIlchonpyung();
-        }
+        function loadCurrentQuizQuestion() {
+            const quiz = currentEra.quizzes[currentQuizIndex];
+            selectedOption = null;
 
-        // ----- DIARY & CALENDAR -----
-        let currentYear = 2004;
-        let currentMonth = 10;
+            // Reset UI
+            document.getElementById('quiz-era-badge').innerText = `제 ${currentEra.id}시대`;
+            document.getElementById('quiz-era-title').innerText = currentEra.title;
+            document.getElementById('quiz-current-num').innerText = currentQuizIndex + 1;
+            document.getElementById('quiz-total-num').innerText = currentEra.quizzes.length;
+            document.getElementById('quiz-type-tag').innerText = quiz.type;
+            document.getElementById('quiz-question').innerText = quiz.question;
 
-        function renderCalendar() {
-            document.getElementById('calendar-month-year').innerText = `${currentYear}. ${currentMonth < 10 ? '0' + currentMonth : currentMonth}`;
-            const daysContainer = document.getElementById('calendar-days');
-            daysContainer.innerHTML = '';
-
-            const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
-            const lastDate = new Date(currentYear, currentMonth, 0).getDate();
-
-            for (let i = 0; i < firstDay; i++) {
-                daysContainer.appendChild(document.createElement('div'));
+            // Clue box
+            const clueBox = document.getElementById('quiz-clue-box');
+            if (quiz.clue) {
+                clueBox.innerText = quiz.clue;
+                clueBox.classList.remove('hidden');
+            } else {
+                clueBox.classList.add('hidden');
             }
 
-            for (let day = 1; day <= lastDate; day++) {
-                const dayEl = document.createElement('button');
-                dayEl.className = 'py-1 rounded hover:bg-cyOrangeSoft text-slate-700 font-bold text-center';
-                dayEl.innerText = day;
-                if (day === 15) {
-                    dayEl.classList.add('bg-cyOrange', 'text-white');
+            // Mascot message
+            document.getElementById('mascot-avatar').innerText = ['🧙‍♂️', '🦁', '📜'][currentQuizIndex % 3];
+            document.getElementById('mascot-msg').innerText = `"차근차근 지문을 읽고 정답을 선택해보세요!"`;
+
+            // Render Options
+            const optionsBox = document.getElementById('quiz-options-box');
+            optionsBox.innerHTML = '';
+
+            quiz.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn btn-push p-3 sm:p-4 rounded-xl border-2 border-amber-800/30 text-left font-jua text-xs sm:text-sm text-slate-800 bg-white hover:bg-amber-50 transition flex items-center gap-3`;
+                btn.onclick = () => checkAnswer(index, btn);
+
+                const numSpan = document.createElement('span');
+                numSpan.className = `w-6 h-6 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs font-bold shrink-0 border border-amber-300`;
+                numSpan.innerText = index + 1;
+
+                const textSpan = document.createElement('span');
+                textSpan.innerText = optText;
+
+                btn.appendChild(numSpan);
+                btn.appendChild(textSpan);
+                optionsBox.appendChild(btn);
+            });
+
+            // Hide Explanation
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+        }
+
+        function checkAnswer(chosenIdx, btnElement) {
+            if (selectedOption !== null) return; // Prevent double taps
+            selectedOption = chosenIdx;
+
+            const quiz = currentEra.quizzes[currentQuizIndex];
+            const isCorrect = chosenIdx === quiz.answer;
+
+            const allOptionBtns = document.querySelectorAll('.option-btn');
+            allOptionBtns.forEach(b => b.classList.add('pointer-events-none'));
+
+            const expBox = document.getElementById('quiz-explanation-box');
+            const resultIcon = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            const expText = document.getElementById('explanation-text');
+
+            if (isCorrect) {
+                playSound('correct');
+                btnElement.classList.remove('bg-white', 'hover:bg-amber-50');
+                btnElement.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                
+                resultIcon.innerText = "🎉";
+                resultTitle.innerText = "정답입니다! (+10점)";
+                resultTitle.className = "font-jua text-base text-emerald-800";
+                expBox.className = "bg-emerald-50 border-2 border-emerald-400 rounded-xl p-4 flex flex-col gap-2";
+
+                document.getElementById('mascot-msg').innerText = `"훌륭해요! 교과서 핵심 내용을 완벽히 파악했군요!"`;
+
+                userProgress.score += 10;
+                saveProgress();
+            } else {
+                playSound('wrong');
+                btnElement.classList.remove('bg-white', 'hover:bg-amber-50');
+                btnElement.classList.add('bg-red-100', 'border-red-400', 'text-red-900');
+
+                // Highlight correct option
+                allOptionBtns[quiz.answer].classList.add('bg-emerald-100', 'border-emerald-500');
+
+                resultIcon.innerText = "💡";
+                resultTitle.innerText = "아쉽네요! 정답을 확인해보세요.";
+                resultTitle.className = "font-jua text-base text-red-800";
+                expBox.className = "bg-red-50 border-2 border-red-300 rounded-xl p-4 flex flex-col gap-2";
+
+                document.getElementById('mascot-msg').innerText = `"틀려도 괜찮아요! 아래 해설을 읽으며 배워가면 돼요!"`;
+
+                // Add to Wrong Quizzes Notebook (Avoid duplication)
+                const alreadyAdded = userProgress.wrongQuizzes.some(q => q.question === quiz.question);
+                if (!alreadyAdded) {
+                    userProgress.wrongQuizzes.push({
+                        eraTitle: currentEra.title,
+                        ...quiz
+                    });
+                    saveProgress();
                 }
-                dayEl.onclick = () => playSound('click');
-                daysContainer.appendChild(dayEl);
             }
+
+            expText.innerText = quiz.explanation;
+            expBox.classList.remove('hidden');
         }
 
-        function changeMonth(delta) {
+        function nextQuizQuestion() {
             playSound('click');
-            currentMonth += delta;
-            if (currentMonth < 1) { currentMonth = 12; currentYear--; }
-            if (currentMonth > 12) { currentMonth = 1; currentYear++; }
-            renderCalendar();
+            currentQuizIndex++;
+
+            if (currentQuizIndex < currentEra.quizzes.length) {
+                loadCurrentQuizQuestion();
+            } else {
+                // Era Finished!
+                finishEra();
+            }
         }
 
-        function renderDiaries() {
-            const list = document.getElementById('diary-list');
-            list.innerHTML = '';
+        function finishEra() {
+            playSound('fanfare');
 
-            if (cyData.diaries.length > 0) {
-                document.getElementById('recent-post-notice').innerText = `새 다이어리 글: "${cyData.diaries[0].title}"`;
+            if (!userProgress.clearedEras.includes(currentEra.id)) {
+                userProgress.clearedEras.push(currentEra.id);
+                userProgress.score += 50; // Era Clear Bonus
+                saveProgress();
             }
 
-            cyData.diaries.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2 relative';
-                card.innerHTML = `
-                    <div class="flex justify-between items-center border-b pb-1.5 border-slate-200">
-                        <span class="font-bold text-xs text-indigo-900">${escapeHtml(item.title)}</span>
-                        <div class="flex items-center gap-2 text-[10px] text-slate-500">
-                            <span>${item.weather}</span>
-                            <span>${item.mood}</span>
-                            <span>${item.date}</span>
-                            <button onclick="deleteDiary(${item.id})" class="text-slate-400 hover:text-red-500 ml-1"><i class="fa-solid fa-trash"></i></button>
-                        </div>
+            // Confetti effect
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('flex');
+            
+            document.getElementById('screen-era-clear').classList.remove('hidden');
+            document.getElementById('screen-era-clear').classList.add('flex');
+
+            document.getElementById('clear-era-name').innerText = currentEra.title;
+            document.getElementById('clear-badge-icon').innerText = currentEra.badgeIcon;
+            document.getElementById('clear-badge-name').innerText = currentEra.badgeName;
+        }
+
+        // REVIEW MODE (WRONG QUESTIONS)
+        function showReviewScreen() {
+            playSound('click');
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-review').classList.remove('hidden');
+            document.getElementById('screen-review').classList.add('flex');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            const container = document.getElementById('review-list-container');
+            container.innerHTML = '';
+
+            if (userProgress.wrongQuizzes.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-slate-500 font-jua">
+                        <span class="text-4xl">🌟</span>
+                        <p class="mt-2 text-base">틀린 문제가 없습니다! 참 잘했어요!</p>
                     </div>
-                    <p class="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap">${escapeHtml(item.content)}</p>
                 `;
-                list.appendChild(card);
-            });
-        }
-
-        function openDiaryModal() { playSound('click'); document.getElementById('modal-diary').classList.remove('hidden'); document.getElementById('modal-diary').classList.add('flex'); }
-        function closeModal(id) { playSound('click'); document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
-
-        function saveDiaryPost() {
-            playSound('click');
-            const title = document.getElementById('new-diary-title').value.trim();
-            const weather = document.getElementById('new-diary-weather').value;
-            const mood = document.getElementById('new-diary-mood').value;
-            const content = document.getElementById('new-diary-content').value.trim();
-
-            if (!title || !content) {
-                alert("제목과 내용을 작성해주세요!");
                 return;
             }
 
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()} ${now.getHours()}:${now.getMinutes()<10?'0':''}${now.getMinutes()}`;
-
-            cyData.diaries.unshift({
-                id: Date.now(),
-                title, weather, mood, content, date: dateStr
-            });
-
-            saveData();
-            renderDiaries();
-            closeModal('modal-diary');
-
-            document.getElementById('new-diary-title').value = '';
-            document.getElementById('new-diary-content').value = '';
-        }
-
-        function deleteDiary(id) {
-            playSound('click');
-            cyData.diaries = cyData.diaries.filter(d => d.id !== id);
-            saveData();
-            renderDiaries();
-        }
-
-        // ----- PHOTO ALBUM -----
-        function renderPhotos() {
-            const list = document.getElementById('photo-list');
-            list.innerHTML = '';
-
-            cyData.photos.forEach(item => {
+            userProgress.wrongQuizzes.forEach((item, index) => {
                 const card = document.createElement('div');
-                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2 relative';
+                card.className = "bg-white border-2 border-amber-800/20 rounded-xl p-4 flex flex-col gap-2 relative shadow-sm";
+
                 card.innerHTML = `
-                    <div class="flex justify-between items-center text-xs font-bold text-slate-800 border-b pb-1">
-                        <span class="truncate">${escapeHtml(item.title)}</span>
-                        <button onclick="deletePhoto(${item.id})" class="text-[10px] text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    <div class="flex justify-between items-center text-xs text-amber-900 font-jua border-b pb-1">
+                        <span>[${item.eraTitle}] 오답노트 #${index + 1}</span>
+                        <button onclick="removeWrongQuiz(${index})" class="text-slate-400 hover:text-red-500 text-xs">
+                            <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
                     </div>
-                    <div class="w-full h-40 bg-slate-200 rounded-lg overflow-hidden border border-slate-300">
-                        <img src="${item.url}" alt="Photo" class="w-full h-full object-cover hover:scale-105 transition">
+                    <h4 class="font-jua text-sm text-slate-900 mt-1">Q. ${item.question}</h4>
+                    <div class="text-xs font-jua text-emerald-800 bg-emerald-50 p-2 rounded border border-emerald-200">
+                        정답: ${item.options[item.answer]}
                     </div>
-                    <p class="text-xs text-slate-600">${escapeHtml(item.desc)}</p>
-                    <span class="text-[10px] text-slate-400 text-right">${item.date}</span>
+                    <p class="text-xs font-batang text-slate-700 bg-amber-50 p-2.5 rounded leading-relaxed">
+                        📖 해설: ${item.explanation}
+                    </p>
                 `;
-                list.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        function openPhotoModal() { playSound('click'); document.getElementById('modal-photo').classList.remove('hidden'); document.getElementById('modal-photo').classList.add('flex'); }
-
-        function savePhotoPost() {
+        function removeWrongQuiz(idx) {
             playSound('click');
-            const title = document.getElementById('new-photo-title').value.trim();
-            let url = document.getElementById('new-photo-url').value.trim();
-            const desc = document.getElementById('new-photo-desc').value.trim();
-
-            if (!title) { alert("사진 제목을 입력해주세요!"); return; }
-            if (!url) url = "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=600&auto=format&fit=crop&q=80";
-
-            cyData.photos.unshift({
-                id: Date.now(),
-                title, url, desc,
-                date: new Date().toISOString().split('T')[0].replace(/-/g, '.')
-            });
-
-            saveData();
-            renderPhotos();
-            closeModal('modal-photo');
-
-            document.getElementById('new-photo-title').value = '';
-            document.getElementById('new-photo-url').value = '';
-            document.getElementById('new-photo-desc').value = '';
+            userProgress.wrongQuizzes.splice(idx, 1);
+            saveProgress();
+            renderReviewList();
         }
 
-        function deletePhoto(id) {
-            playSound('click');
-            cyData.photos = cyData.photos.filter(p => p.id !== id);
-            saveData();
-            renderPhotos();
-        }
-
-        // ----- GUESTBOOK -----
-        function renderGuestbook() {
-            const list = document.getElementById('guestbook-list');
-            list.innerHTML = '';
-
-            cyData.guestbook.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2 relative';
-                card.innerHTML = `
-                    <div class="flex justify-between items-center bg-slate-100 p-1.5 rounded text-xs">
-                        <div class="flex items-center gap-1.5 font-bold text-slate-700">
-                            <span>${item.avatar}</span>
-                            <span>${escapeHtml(item.name)}</span>
-                            ${item.secret ? '<span class="text-[10px] text-amber-600 bg-amber-100 px-1 rounded">비밀글 🔒</span>' : ''}
-                        </div>
-                        <div class="flex items-center gap-2 text-[10px] text-slate-400">
-                            <span>${item.date}</span>
-                            <button onclick="deleteGuestbook(${item.id})" class="hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                    </div>
-                    <p class="text-xs text-slate-700 p-1 leading-relaxed">${item.secret ? '🔒 작성자와 홈피 주인만 볼 수 있는 비밀글입니다.' : escapeHtml(item.msg)}</p>
-                `;
-                list.appendChild(card);
-            });
-        }
-
-        function addGuestbookEntry() {
-            playSound('click');
-            const name = document.getElementById('guest-name-input').value.trim();
-            const msg = document.getElementById('guest-msg-input').value.trim();
-            const secret = document.getElementById('guest-secret-check').checked;
-            const avatar = document.getElementById('guest-avatar-select').value;
-
-            if (!name || !msg) {
-                alert("이름과 내용을 모두 입력해주세요!");
-                return;
+        function resetAllProgress() {
+            if (confirm("모든 학습 기록과 점수를 초기화하시겠습니까?")) {
+                userProgress = { score: 0, clearedEras: [], wrongQuizzes: [] };
+                saveProgress();
+                showHomeScreen();
             }
-
-            const now = new Date();
-            const dateStr = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()} ${now.getHours()}:${now.getMinutes()<10?'0':''}${now.getMinutes()}`;
-
-            cyData.guestbook.unshift({
-                id: Date.now(),
-                name, avatar, secret, msg, date: dateStr
-            });
-
-            saveData();
-            renderGuestbook();
-
-            document.getElementById('guest-name-input').value = '';
-            document.getElementById('guest-msg-input').value = '';
-            document.getElementById('guest-secret-check').checked = false;
         }
 
-        function deleteGuestbook(id) {
-            playSound('click');
-            cyData.guestbook = cyData.guestbook.filter(g => g.id !== id);
-            saveData();
-            renderGuestbook();
-        }
-
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        // ----- INITIALIZATION -----
+        // INITIAL LOAD
         window.onload = () => {
-            document.getElementById('homepage-title').innerText = cyData.title;
-            document.getElementById('profile-bio').innerText = cyData.bio;
-            document.getElementById('profile-img').src = cyData.profileImg;
-            document.getElementById('today-mood').value = cyData.mood || "맑음 ☀️";
-
-            renderIlchonpyung();
-            renderCalendar();
-            renderDiaries();
-            renderPhotos();
-            renderGuestbook();
+            renderEraCards();
+            updateHeaderStats();
         };
     </script>
 </body>
