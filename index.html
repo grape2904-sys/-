@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>초등 5학년 영어 스펠링 맞추기 게임</title>
+    <title>★~ 추억의 미니홈피 ~★</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Jua, Gaegu, Fredoka) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Gaegu:wght@700&family=Jua&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Retro Fonts (NeoDunggeunmo & Galmuri) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm.css">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -20,272 +17,490 @@
             theme: {
                 extend: {
                     colors: {
-                        pastelYellow: '#FEF08A',
-                        pastelPink: '#FBCFE8',
-                        pastelBlue: '#BAE6FD',
-                        pastelGreen: '#BBF7D0',
-                        pastelPurple: '#DDD6FE',
-                        pastelOrange: '#FFEDD5',
+                        cyBg: '#A3B4C8',
+                        cyOuter: '#809BB5',
+                        cyBorder: '#647D97',
+                        cyOrange: '#FF6C00',
+                        cyOrangeLight: '#FF8429',
+                        cyOrangeSoft: '#FFF4EB',
+                        cyGrayBg: '#EEEEEE',
+                        cyHeaderBg: '#1D829B',
                     },
                     fontFamily: {
-                        jua: ['Jua', 'sans-serif'],
-                        gaegu: ['Gaegu', 'cursive'],
-                        fredoka: ['Fredoka', 'sans-serif']
+                        galmuri: ['Galmuri9', 'sans-serif'],
+                        neodgm: ['NeoDunggeunmo', 'sans-serif']
                     }
                 }
             }
         }
     </script>
+
     <style>
-        body {
-            font-family: 'Jua', sans-serif;
-            background-color: #F0F9FF;
-            background-image: radial-gradient(#CBD5E1 1.5px, transparent 1.5px);
-            background-size: 20px 20px;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
+        * {
+            font-family: 'NeoDunggeunmo', 'Galmuri9', sans-serif;
+            letter-spacing: -0.5px;
         }
 
-        .letter-block {
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+        /* Cyworld Retro Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-        .letter-block:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+        ::-webkit-scrollbar-track {
+            background: #F1F1F1;
+            border: 1px solid #CCCCCC;
         }
-
-        .drop-zone {
-            transition: all 0.2s ease;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.08);
+        ::-webkit-scrollbar-thumb {
+            background: #FF8429;
+            border-radius: 2px;
         }
-
-        .drop-zone.drag-over {
-            scale: 1.08;
-            border-color: #3B82F6;
-            background-color: #EFF6FF;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E36B00;
         }
 
-        @keyframes bounce-gentle {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        .animate-bounce-gentle {
-            animation: bounce-gentle 2s infinite ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-        .animate-shake {
-            animation: shake 0.4s ease-in-out;
+        /* Classic Retro Outer Frame Shadow */
+        .cy-window-box {
+            background-color: #B2C4D6;
+            background-image: radial-gradient(#97ABC0 1px, transparent 0);
+            background-size: 8px 8px;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.25);
         }
 
-        @keyframes pulse-success {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .cy-inner-frame {
+            border: 2px border #6B88A5;
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.15);
         }
-        .animate-success {
-            animation: pulse-success 0.5s ease-in-out;
+
+        /* Cyworld Side Navigation Tabs */
+        .cy-tab {
+            background: #2E81A5;
+            color: white;
+            border: 1px solid #1A5974;
+            border-left: none;
+            border-radius: 0 6px 6px 0;
+            box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+            transition: all 0.15s ease;
+        }
+        .cy-tab:hover {
+            background: #3BA0CC;
+            transform: translateX(3px);
+        }
+        .cy-tab.active {
+            background: white !important;
+            color: #FF6C00 !important;
+            border: 1px solid #A6A6A6 !important;
+            border-left: none !important;
+            font-weight: bold;
+            transform: translateX(4px);
+        }
+
+        /* Pixel Dot Pattern Effects */
+        .pixel-border {
+            border: 2px solid #333333;
+            box-shadow: 2px 2px 0 border #666;
+        }
+
+        .dotted-line {
+            background-image: linear-gradient(to right, #999 50%, rgba(255,255,255,0) 0%);
+            background-position: bottom;
+            background-size: 6px 1px;
+            background-repeat: repeat-x;
+        }
+
+        /* Dot Matrix Avatar Canvas Background */
+        .miniroom-bg {
+            background: #EAF4FA;
+            background-image: 
+                linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+        .animate-float {
+            animation: floatBubble 2.5s infinite ease-in-out;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center p-3 sm:p-6 text-slate-800">
+<body class="bg-cyBg min-h-screen flex items-center justify-center p-2 sm:p-4 select-none">
 
-    <!-- 상단 헤더 & 컨트롤 바 -->
-    <header class="w-full max-w-4xl flex flex-col sm:flex-row justify-between items-center gap-3 bg-white/95 backdrop-blur-md p-4 rounded-3xl shadow-lg border-4 border-pastelPurple">
-        <div class="flex items-center gap-3">
-            <span class="text-3xl sm:text-4xl text-amber-500 animate-bounce-gentle">🎓</span>
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text transparent">
-                    초등 5학년 스펠링 마스터
-                </h1>
-                <span class="text-xs text-indigo-400 font-sans">Grade 5 English Spelling Challenge</span>
-            </div>
-        </div>
+    <!-- 메인 미니홈피 전체 창 (Dot Outer Border Frame) -->
+    <div class="cy-window-box w-full max-w-[1020px] rounded-2xl p-3 sm:p-5 border-4 border-white relative">
         
-        <!-- 상태 표시판 (점수, 별, 스테이지) -->
-        <div class="flex items-center gap-3 sm:gap-4 bg-indigo-50 px-4 sm:px-5 py-2 rounded-2xl border-2 border-indigo-200">
-            <div class="text-center">
-                <span class="text-xs text-indigo-500 block">진행도</span>
-                <span id="stage-text" class="text-base sm:text-lg font-bold text-indigo-800">1 / 20</span>
+        <!-- 상단 미니홈피 제목 & 방문자 수 / BGM 플레이어 -->
+        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center bg-white/90 rounded-t-xl px-4 py-2 border-2 border-cyBorder mb-2 gap-2 text-xs sm:text-sm">
+            <!-- 방문자 수 -->
+            <div class="flex items-center gap-3 font-bold text-slate-700">
+                <span class="text-cyOrange">TODAY <span id="today-count" class="text-red-600">128</span></span>
+                <span class="text-slate-300">|</span>
+                <span class="text-slate-600">TOTAL <span id="total-count" class="text-slate-800">45,820</span></span>
             </div>
-            <div class="h-8 w-0.5 bg-indigo-200"></div>
-            <div class="text-center">
-                <span class="text-xs text-indigo-500 block">획득한 별</span>
-                <span id="star-text" class="text-base sm:text-lg font-bold text-amber-500 flex items-center justify-center gap-1">
-                    <i class="fa-solid fa-star"></i> <span id="star-count">0</span>
+
+            <!-- 미니홈피 타이틀 -->
+            <div class="flex-1 text-center font-bold text-slate-800 truncate px-2">
+                <span id="homepage-title" class="text-base sm:text-lg text-cyOrange hover:underline cursor-pointer" onclick="editHomepageTitle()" title="클릭하여 타이틀 수정">
+                    ★~ 난... ㄱ├끔 눈물을 흘린ㄷ├... ~★
                 </span>
+                <i class="fa-solid fa-pen text-[10px] text-slate-400 ml-1"></i>
             </div>
-            <div class="h-8 w-0.5 bg-indigo-200"></div>
-            <div class="text-center">
-                <span class="text-xs text-indigo-500 block">점수</span>
-                <span id="score-text" class="text-xl sm:text-2xl font-bold text-indigo-600">0</span>
+
+            <!-- BGM 뮤직 플레이어 -->
+            <div class="flex items-center gap-2 bg-cyOrangeSoft px-3 py-1.5 rounded-lg border border-orange-200">
+                <span class="text-cyOrange animate-pulse"><i class="fa-solid fa-music"></i></span>
+                <div class="flex flex-col text-[11px] leading-tight">
+                    <span class="font-bold text-orange-900 truncate max-w-[130px]" id="bgm-title">프리스타일 - Y (FT. 호연주)</span>
+                    <span class="text-[9px] text-orange-600">CYWORLD BGM 2004</span>
+                </div>
+                <select id="bgm-select" onchange="changeBGM(this.value)" class="text-[10px] bg-white border border-orange-300 rounded px-1 py-0.5 outline-none cursor-pointer">
+                    <option value="0">프리스타일 - Y</option>
+                    <option value="1">YUI - Goodbye Days</option>
+                    <option value="2">윤도현 - 사랑했나봐</option>
+                    <option value="3">MC몽 - I Love U Oh Thank U</option>
+                </select>
+                <button id="btn-bgm-toggle" onclick="toggleBGM()" class="w-6 h-6 bg-cyOrange hover:bg-cyOrangeLight text-white rounded flex items-center justify-center shadow text-xs">
+                    <i id="bgm-icon" class="fa-solid fa-play"></i>
+                </button>
             </div>
         </div>
-    </header>
 
-    <!-- 중앙 게임 구역 -->
-    <main class="w-full max-w-4xl flex-1 flex flex-col items-center justify-center my-4 gap-5">
+        <!-- 미니홈피 메인 레이아웃 (좌 측 프로필 + 우 측 컨텐츠 + 오른쪽 탭) -->
+        <div class="relative flex flex-col md:flex-row gap-2 bg-white rounded-b-xl border-2 border-cyBorder p-3 min-h-[620px]">
+            
+            <!-- [좌측 프로필 사이드바] -->
+            <aside class="w-full md:w-[230px] flex flex-col justify-between border-2 border-dashed border-slate-300 rounded-xl p-3 bg-slate-50/50">
+                <div>
+                    <!-- 오늘 기분 셀렉터 -->
+                    <div class="flex justify-between items-center bg-sky-100 border border-sky-200 rounded px-2 py-1 text-xs mb-3 text-sky-900">
+                        <span class="font-bold"><i class="fa-solid fa-smile text-amber-500"></i> TODAY IS...</span>
+                        <select id="today-mood" onchange="saveMood(this.value)" class="bg-white text-[11px] border border-sky-300 rounded px-1">
+                            <option value="맑음 ☀️">맑음 ☀️</option>
+                            <option value="슬픔 ☔">슬픔 ☔</option>
+                            <option value="행복 🥰">행복 🥰</option>
+                            <option value="피곤 🥱">피곤 🥱</option>
+                            <option value="열공 📚">열공 📚</option>
+                        </select>
+                    </div>
 
-        <!-- 단어 힌트 카드 -->
-        <div class="w-full bg-white rounded-3xl p-5 sm:p-6 shadow-xl border-4 border-pastelBlue text-center relative overflow-hidden">
-            <div class="absolute top-3 right-3 flex items-center gap-1.5 sm:gap-2">
-                <!-- 발음 속도 선택 메뉴 추가 -->
-                <div class="relative inline-block">
-                    <select id="speed-select" onchange="changeSpeechRate(this.value)" class="h-11 sm:h-12 bg-indigo-50 border-2 border-indigo-200 text-indigo-800 text-xs sm:text-sm rounded-2xl px-2 sm:px-3 font-bold shadow-sm focus:outline-none focus:border-indigo-400 cursor-pointer">
-                        <option value="0.65">🐢 느리게</option>
-                        <option value="0.85" selected>▶️ 보통</option>
-                        <option value="1.05">🐇 빠르게</option>
+                    <!-- 미니미 프로필 사진 -->
+                    <div class="w-full h-44 bg-slate-200 rounded-lg border-2 border-slate-300 overflow-hidden relative group mb-3 flex items-center justify-center">
+                        <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80" alt="Profile" class="w-full h-full object-cover">
+                        <button onclick="changeProfileImg()" class="absolute bottom-2 right-2 bg-black/60 hover:bg-black/80 text-white text-[10px] px-2 py-1 rounded border border-white/50 backdrop-blur-sm">
+                            <i class="fa-solid fa-camera"></i> 사진변경
+                        </button>
+                    </div>
+
+                    <!-- 프로필 소개글 -->
+                    <div class="bg-white p-2.5 rounded-lg border border-slate-200 text-xs text-slate-700 min-h-[110px] whitespace-pre-wrap leading-relaxed relative">
+                        <p id="profile-bio">퍼가요~♡
+2000년대 감성 충만했던 그 시절.
+음악 들으면서 도토리 선물받던 미니홈피에 오신 걸 환영합니다!
+일촌평 많이 남겨주세요...★</p>
+                        <button onclick="editBio()" class="absolute top-1 right-1 text-[10px] text-slate-400 hover:text-cyOrange">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 일촌 정보 & 일촌 바로가기 드롭다운 -->
+                <div class="mt-4 pt-3 border-t border-slate-200">
+                    <div class="flex justify-between items-center text-[11px] mb-1.5 font-bold text-slate-600">
+                        <span><i class="fa-solid fa-heart text-red-500"></i> 일촌목록</span>
+                        <span class="text-cyOrange" id="ilchon-count">5명</span>
+                    </div>
+                    <select id="ilchon-select" onchange="visitIlchon(this.value)" class="w-full text-xs bg-white border border-slate-300 rounded p-1.5 outline-none cursor-pointer text-slate-700">
+                        <option value="">파도타기 일촌 선택...</option>
+                        <option value="★길동이★">★길동이★ (베프)</option>
+                        <option value="영희공주">영희공주 (깜찍이)</option>
+                        <option value="철수대장">철수대장 (탐험가)</option>
+                        <option value="민수짱">민수짱 (감성보이)</option>
+                        <option value="유진★">유진★ (춤꾼)</option>
                     </select>
                 </div>
+            </aside>
 
-                <button id="btn-sound" onclick="speakCurrentWord()" class="w-11 h-11 sm:w-12 sm:h-12 bg-pastelBlue hover:bg-sky-200 text-sky-700 rounded-2xl flex items-center justify-center text-xl shadow-md transition hover:scale-105 active:scale-95" title="발음 듣기">
-                    <i class="fa-solid fa-volume-high"></i>
-                </button>
-                <button id="btn-hint" onclick="useHint()" class="w-11 h-11 sm:w-12 sm:h-12 bg-pastelYellow hover:bg-amber-200 text-amber-700 rounded-2xl flex items-center justify-center text-xl shadow-md transition hover:scale-105 active:scale-95" title="힌트 (스펠링 하나 공개)">
-                    <i class="fa-solid fa-lightbulb"></i>
-                </button>
-            </div>
+            <!-- [우측 메인 컨텐츠 영역] -->
+            <main class="flex-1 flex flex-col justify-between bg-white rounded-xl border border-slate-200 p-3 sm:p-4 overflow-y-auto max-h-[620px] relative">
+                
+                <!-- 1. HOME TAB CONTENT -->
+                <div id="tab-home" class="tab-content flex flex-col gap-4">
+                    <!-- 최근 게시물 롤링 텍스트 -->
+                    <div class="bg-cyOrangeSoft border border-orange-200 rounded-lg p-2.5 text-xs flex items-center justify-between text-orange-900">
+                        <div class="flex items-center gap-2 truncate">
+                            <span class="bg-cyOrange text-white text-[10px] font-bold px-1.5 py-0.5 rounded">RECENT</span>
+                            <span id="recent-post-notice" class="truncate">새 다이어리 글: "오늘도 미니홈피 꾸미는 중...!"</span>
+                        </div>
+                        <span class="text-[10px] text-orange-400 shrink-0">NEW!</span>
+                    </div>
 
-            <!-- 단어 뜻 (한국어) -->
-            <div class="text-slate-400 text-sm font-gaegu text-xl mb-1">다음 뜻에 맞는 영어 단어 스펠링을 맞춰보세요!</div>
-            <div id="word-meaning" class="text-3xl sm:text-5xl font-extrabold text-indigo-600 my-2">
-                숙제
-            </div>
-            
-            <!-- 힌트 및 상태 메시지 출력 창 -->
-            <div id="hint-box" class="text-sm sm:text-base text-pink-500 min-h-[1.5rem] mt-1 font-semibold"></div>
-        </div>
+                    <!-- 픽셀 미니룸 (Miniroom Canvas) -->
+                    <div>
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-1">
+                            <span><i class="fa-solid fa-house-user text-cyOrange"></i> MINIROOM</span>
+                            <button onclick="changeMiniroomTheme()" class="text-[10px] text-slate-500 hover:text-cyOrange">
+                                <i class="fa-solid fa-palette"></i> 가구 테마 바꾸기
+                            </button>
+                        </div>
+                        <div id="miniroom-container" class="miniroom-bg w-full h-52 sm:h-64 rounded-xl border-2 border-slate-300 relative overflow-hidden flex items-end justify-center p-4">
+                            <!-- 방 배경 및 벽지 연출 -->
+                            <div class="absolute top-3 left-4 bg-white/80 border border-slate-300 rounded px-2 py-1 text-[11px] shadow-sm animate-float">
+                                💬 웰컴 투 마이 룸! 방명록 남겨주세요~
+                            </div>
+                            
+                            <!-- 창문 -->
+                            <div class="absolute top-4 right-6 w-16 h-20 bg-sky-200 border-2 border-amber-800 rounded flex flex-col justify-between p-1 shadow-inner">
+                                <div class="w-full h-1/2 border-b border-amber-800"></div>
+                                <span class="text-[10px] text-center">☁️</span>
+                            </div>
 
-        <!-- 빈칸 Drop Zone 라인 -->
-        <div class="w-full bg-white/80 backdrop-blur-sm rounded-3xl p-4 sm:p-6 shadow-md border-2 border-slate-200 flex flex-col items-center gap-3">
-            <div class="text-xs text-slate-400">블록을 끌어다 놓거나, 아래 블록을 터치/클릭하세요!</div>
-            <div id="drop-zone-container" class="flex flex-wrap justify-center gap-1.5 sm:gap-3 my-2 min-h-[70px] items-center">
-                <!-- Drop Zones dynamically generated here -->
-            </div>
-        </div>
+                            <!-- 미니미 픽셀 캐릭터 & 카펫/가구 -->
+                            <div class="w-48 h-12 bg-amber-200/60 rounded-full border border-amber-300 absolute bottom-4 flex items-center justify-center shadow-inner"></div>
 
-        <!-- 스펠링 알파벳 블록 라인 -->
-        <div class="w-full bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 rounded-3xl p-4 sm:p-6 shadow-inner border-2 border-white flex flex-col items-center gap-3">
-            <div class="text-xs text-slate-500">사용할 수 있는 스펠링 알파벳 블록</div>
-            <div id="letter-blocks-container" class="flex flex-wrap justify-center gap-2 sm:gap-3 min-h-[70px] items-center max-w-full overflow-x-auto">
-                <!-- Letter Blocks dynamically generated here -->
-            </div>
-        </div>
+                            <!-- 픽셀 아바타 (Mini-me) -->
+                            <div id="minime-avatar" class="relative z-10 flex flex-col items-center cursor-pointer transition hover:scale-110 mb-2" onclick="triggerMinimeAction()">
+                                <div id="avatar-speech" class="hidden absolute -top-8 bg-yellow-100 border border-amber-400 text-[10px] px-2 py-0.5 rounded-full text-amber-900 whitespace-nowrap shadow">
+                                    도토리 1개만... 🐿️
+                                </div>
+                                <div class="w-12 h-16 relative">
+                                    <!-- 픽셀 아바타 SVG graphics -->
+                                    <svg viewBox="0 0 64 64" class="w-full h-full drop-shadow">
+                                        <!-- Hair -->
+                                        <path d="M16 20 Q 32 8 48 20 Q 52 36 48 40 L 16 40 Z" fill="#3D2314"/>
+                                        <!-- Face -->
+                                        <circle cx="32" cy="28" r="14" fill="#FFE0BD"/>
+                                        <!-- Eyes -->
+                                        <circle cx="27" cy="27" r="2" fill="#000"/>
+                                        <circle cx="37" cy="27" r="2" fill="#000"/>
+                                        <!-- Cheeks -->
+                                        <circle cx="23" cy="30" r="2" fill="#FFB6C1"/>
+                                        <circle cx="41" cy="30" r="2" fill="#FFB6C1"/>
+                                        <!-- Mouth -->
+                                        <path d="M 29 33 Q 32 36 35 33" stroke="#D32F2F" stroke-width="1.5" fill="none"/>
+                                        <!-- Shirt -->
+                                        <path d="M 18 40 L 46 40 L 42 60 L 22 60 Z" fill="#FF6C00"/>
+                                        <!-- Pants -->
+                                        <path d="M 22 60 L 42 60 L 42 64 L 22 64 Z" fill="#333"/>
+                                    </svg>
+                                </div>
+                                <span class="text-[10px] font-bold bg-white/90 border border-slate-300 px-1.5 py-0.5 rounded-full mt-0.5 shadow-sm text-slate-800">
+                                    나(미니미)
+                                </span>
+                            </div>
 
-    </main>
+                            <!-- 가구 소품 (오디오, 곰인형) -->
+                            <div class="absolute bottom-5 left-6 text-2xl">📻</div>
+                            <div class="absolute bottom-5 right-8 text-2xl">🧸</div>
+                        </div>
+                    </div>
 
-    <!-- 하단 컨트롤 버튼 & 푸터 -->
-    <footer class="w-full max-w-4xl flex flex-wrap justify-between items-center gap-3 bg-white/80 p-4 rounded-3xl shadow-md">
-        <button onclick="resetCurrentWord()" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl shadow transition flex items-center gap-2 active:scale-95">
-            <i class="fa-solid fa-rotate-right"></i> 다시 놓기
-        </button>
+                    <!-- 일촌평 (Ilchon Comments) 섹션 -->
+                    <div class="border-t border-slate-200 pt-3">
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-700 mb-2">
+                            <span><i class="fa-solid fa-comments text-cyOrange"></i> 일촌평 (<span id="ilchonpyung-count">0</span>)</span>
+                            <span class="text-[10px] text-slate-400">일촌들과 나누는 한줄 수다</span>
+                        </div>
 
-        <div class="flex gap-2">
-            <button id="btn-next" onclick="nextWord()" class="px-6 py-3 bg-pastelGreen hover:bg-emerald-200 text-emerald-800 font-bold rounded-2xl shadow transition flex items-center gap-2 active:scale-95">
-                다음 단어 <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
-    </footer>
+                        <!-- 일촌평 입력폼 -->
+                        <div class="flex gap-1.5 mb-3 bg-slate-50 p-2 rounded-lg border border-slate-200">
+                            <input type="text" id="ilchon-nick-input" placeholder="일촌명(예: 길동이)" class="w-28 text-xs border border-slate-300 rounded px-2 py-1 outline-none">
+                            <input type="text" id="ilchon-msg-input" placeholder="일촌평을 남겨주세요 (최대 50자)" class="flex-1 text-xs border border-slate-300 rounded px-2 py-1 outline-none" maxlength="50" onkeyup="if(event.key==='Enter') addIlchonpyung()">
+                            <button onclick="addIlchonpyung()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-3 py-1 rounded font-bold transition">
+                                등록
+                            </button>
+                        </div>
 
-    <!-- 게임 완료 모달 -->
-    <div id="completion-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-pastelPurple animate-success">
-            <div class="text-6xl mb-3">🏆🌟🎉</div>
-            <h2 class="text-3xl font-bold text-indigo-600 mb-1">축하합니다!</h2>
-            <p class="text-slate-600 mb-4 text-base">5학년 필수 영어 단어를 모두 마스터했습니다!</p>
-
-            <div id="stars-display" class="flex justify-center gap-2 text-4xl text-amber-400 mb-4">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-            </div>
-
-            <div class="bg-indigo-50 p-4 rounded-2xl border-2 border-indigo-100 mb-6 flex justify-around">
-                <div>
-                    <p class="text-xs text-indigo-500">최종 점수</p>
-                    <p id="final-score" class="text-3xl font-extrabold text-indigo-600">0점</p>
+                        <!-- 일촌평 리스트 -->
+                        <div id="ilchonpyung-list" class="flex flex-col gap-1.5 max-h-36 overflow-y-auto pr-1">
+                            <!-- Dynamically added -->
+                        </div>
+                    </div>
                 </div>
-                <div class="h-10 w-0.5 bg-indigo-200"></div>
-                <div>
-                    <p class="text-xs text-indigo-500">획득한 별</p>
-                    <p id="final-stars" class="text-3xl font-extrabold text-amber-500">0개</p>
-                </div>
-            </div>
 
-            <button onclick="restartGame()" class="w-full py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl shadow-lg transition text-xl active:scale-95">
-                다시 도전하기
-            </button>
+                <!-- 2. DIARY TAB CONTENT -->
+                <div id="tab-diary" class="tab-content hidden flex-col gap-4">
+                    <div class="flex justify-between items-center border-b pb-2 border-slate-200">
+                        <span class="text-sm font-bold text-slate-800"><i class="fa-solid fa-book-open text-cyOrange"></i> DIARY</span>
+                        <button onclick="openDiaryModal()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-3 py-1.5 rounded font-bold flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-pen-to-square"></i> 일기 쓰기
+                        </button>
+                    </div>
+
+                    <!-- 다이어리 레트로 달력 & 일기 목록 분할 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- 레트로 달력 위젯 -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col items-center">
+                            <div class="flex justify-between items-center w-full text-xs font-bold text-slate-700 mb-2">
+                                <button onclick="changeMonth(-1)" class="text-slate-400 hover:text-cyOrange">&lt;</button>
+                                <span id="calendar-month-year">2004. 10</span>
+                                <button onclick="changeMonth(1)" class="text-slate-400 hover:text-cyOrange">&gt;</button>
+                            </div>
+                            <div class="grid grid-cols-7 gap-1 text-center text-[11px] w-full font-bold text-slate-500 mb-1">
+                                <span class="text-red-500">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="text-blue-500">토</span>
+                            </div>
+                            <div id="calendar-days" class="grid grid-cols-7 gap-1 text-center text-xs w-full">
+                                <!-- Dynamically generated -->
+                            </div>
+                        </div>
+
+                        <!-- 일기 리스트 표시 -->
+                        <div class="md:col-span-2 flex flex-col gap-3 max-h-[380px] overflow-y-auto pr-1" id="diary-list">
+                            <!-- Dynamically loaded -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. PHOTO ALBUM TAB CONTENT -->
+                <div id="tab-photo" class="tab-content hidden flex-col gap-4">
+                    <div class="flex justify-between items-center border-b pb-2 border-slate-200">
+                        <span class="text-sm font-bold text-slate-800"><i class="fa-solid fa-camera-retro text-cyOrange"></i> PHOTO ALBUM</span>
+                        <button onclick="openPhotoModal()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-3 py-1.5 rounded font-bold flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-plus"></i> 사진 올리기
+                        </button>
+                    </div>
+
+                    <!-- 사진 갤러리 그리드 -->
+                    <div id="photo-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[420px] overflow-y-auto pr-1">
+                        <!-- Dynamically loaded -->
+                    </div>
+                </div>
+
+                <!-- 4. GUESTBOOK TAB CONTENT -->
+                <div id="tab-guest" class="tab-content hidden flex-col gap-4">
+                    <div class="flex justify-between items-center border-b pb-2 border-slate-200">
+                        <span class="text-sm font-bold text-slate-800"><i class="fa-solid fa-book-bookmark text-cyOrange"></i> GUESTBOOK (방명록)</span>
+                        <span class="text-xs text-slate-400">자유롭게 글을 남겨주세요!</span>
+                    </div>
+
+                    <!-- 방명록 작성 박스 -->
+                    <div class="bg-cyOrangeSoft border border-orange-200 rounded-xl p-3 flex flex-col gap-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex items-center gap-2 text-xs">
+                                <span class="font-bold text-slate-700">작성자:</span>
+                                <input type="text" id="guest-name-input" placeholder="이름/일촌명" class="w-28 text-xs border border-orange-300 rounded px-2 py-1 outline-none bg-white">
+                                <label class="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
+                                    <input type="checkbox" id="guest-secret-check" class="rounded accent-cyOrange"> 비밀글 🔒
+                                </label>
+                            </div>
+                            <!-- 아바타 아이콘 선택 -->
+                            <div class="flex items-center gap-1 text-xs">
+                                <span class="text-[11px] text-slate-500">미니미:</span>
+                                <select id="guest-avatar-select" class="text-xs bg-white border border-orange-300 rounded px-1 py-0.5">
+                                    <option value="👦">👦 소년</option>
+                                    <option value="👧">👧 소녀</option>
+                                    <option value="🐱">🐱 고양이</option>
+                                    <option value="🐶">🐶 강아지</option>
+                                    <option value="🐰">🐰 토끼</option>
+                                </select>
+                            </div>
+                        </div>
+                        <textarea id="guest-msg-input" rows="3" placeholder="남길 소중한 메시지를 입력하세요... (퍼가요~♡)" class="w-full text-xs border border-orange-300 rounded p-2 outline-none resize-none bg-white"></textarea>
+                        <div class="flex justify-end">
+                            <button onclick="addGuestbookEntry()" class="bg-cyOrange hover:bg-cyOrangeLight text-white text-xs px-4 py-1.5 rounded font-bold shadow transition flex items-center gap-1">
+                                <i class="fa-solid fa-check"></i> 방명록 남기기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 방명록 글 목록 -->
+                    <div id="guestbook-list" class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-1">
+                        <!-- Dynamically generated -->
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- [우측 네비게이션 탭 (Cyworld Classic Side Tabs)] -->
+            <nav class="flex md:flex-col gap-1 mt-2 md:mt-0 md:-mr-9 z-20 shrink-0">
+                <button onclick="switchTab('home')" id="tab-btn-home" class="cy-tab active text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
+                    홈
+                </button>
+                <button onclick="switchTab('diary')" id="tab-btn-diary" class="cy-tab text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
+                    다이어리
+                </button>
+                <button onclick="switchTab('photo')" id="tab-btn-photo" class="cy-tab text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
+                    사진첩
+                </button>
+                <button onclick="switchTab('guest')" id="tab-btn-guest" class="cy-tab text-xs px-3 py-2 sm:py-3 text-center cursor-pointer">
+                    방명록
+                </button>
+            </nav>
         </div>
     </div>
 
-    <!-- JavaScript 로직 -->
+    <!-- ===== MODALS ===== -->
+
+    <!-- 다이어리 작성 모달 -->
+    <div id="modal-diary" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl border-4 border-cyOrange w-full max-w-md p-4 shadow-2xl flex flex-col gap-3">
+            <div class="flex justify-between items-center border-b pb-2">
+                <span class="font-bold text-sm text-cyOrange"><i class="fa-solid fa-pen"></i> 새로운 일기 쓰기</span>
+                <button onclick="closeModal('modal-diary')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <input type="text" id="new-diary-title" placeholder="일기 제목" class="text-xs border border-slate-300 rounded p-2 outline-none">
+            <div class="flex gap-2">
+                <select id="new-diary-weather" class="text-xs border border-slate-300 rounded p-1.5 flex-1">
+                    <option value="맑음 ☀️">날씨: 맑음 ☀️</option>
+                    <option value="비 ☔">날씨: 비 ☔</option>
+                    <option value="구름 ☁️">날씨: 구름 ☁️</option>
+                    <option value="눈 ❄️">날씨: 눈 ❄️</option>
+                </select>
+                <select id="new-diary-mood" class="text-xs border border-slate-300 rounded p-1.5 flex-1">
+                    <option value="행복 🥰">기분: 행복 🥰</option>
+                    <option value="감성적 🌙">기분: 감성적 🌙</option>
+                    <option value="신남 🎵">기분: 신남 🎵</option>
+                    <option value="우울 💧">기분: 우울 💧</option>
+                </select>
+            </div>
+            <textarea id="new-diary-content" rows="6" placeholder="오늘 있었던 일이나 생각한 일들을 남겨보세요..." class="text-xs border border-slate-300 rounded p-2 outline-none resize-none"></textarea>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal('modal-diary')" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs rounded">취소</button>
+                <button onclick="saveDiaryPost()" class="px-4 py-1.5 bg-cyOrange text-white text-xs font-bold rounded hover:bg-cyOrangeLight">저장하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사진 업로드 모달 -->
+    <div id="modal-photo" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl border-4 border-cyOrange w-full max-w-md p-4 shadow-2xl flex flex-col gap-3">
+            <div class="flex justify-between items-center border-b pb-2">
+                <span class="font-bold text-sm text-cyOrange"><i class="fa-solid fa-image"></i> 사진 올리기</span>
+                <button onclick="closeModal('modal-photo')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <input type="text" id="new-photo-title" placeholder="사진 제목" class="text-xs border border-slate-300 rounded p-2 outline-none">
+            <input type="text" id="new-photo-url" placeholder="이미지 URL (비워두면 기본 추억 사진 적용)" class="text-xs border border-slate-300 rounded p-2 outline-none">
+            <textarea id="new-photo-desc" rows="3" placeholder="사진에 대한 설명을 남겨주세요 (예: 2004년 여름 한강에서 찍은 사진!)" class="text-xs border border-slate-300 rounded p-2 outline-none resize-none"></textarea>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeModal('modal-photo')" class="px-3 py-1.5 bg-slate-200 text-slate-700 text-xs rounded">취소</button>
+                <button onclick="savePhotoPost()" class="px-4 py-1.5 bg-cyOrange text-white text-xs font-bold rounded hover:bg-cyOrangeLight">올리기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC Persisted in LocalStorage -->
     <script>
-        // 초등학교 5학년 수준 영어 단어 목록 (20개)
-        const masterWordList = [
-            { word: "Homework", meaning: "숙제" },
-            { word: "Teacher", meaning: "선생님" },
-            { word: "Weather", meaning: "날씨" },
-            { word: "English", meaning: "영어" },
-            { word: "Subject", meaning: "과목" },
-            { word: "Science", meaning: "과학" },
-            { word: "Favorite", meaning: "가장 좋아하는" },
-            { word: "Practice", meaning: "연습하다" },
-            { word: "Exercise", meaning: "운동하다" },
-            { word: "Season", meaning: "계절" },
-            { word: "Summer", meaning: "여름" },
-            { word: "Winter", meaning: "겨울" },
-            { word: "Beautiful", meaning: "아름다운" },
-            { word: "Delicious", meaning: "맛있는" },
-            { word: "Calendar", meaning: "달력" },
-            { word: "Computer", meaning: "컴퓨터" },
-            { word: "Tomorrow", meaning: "내일" },
-            { word: "Yesterday", meaning: "어제" },
-            { word: "Library", meaning: "도서관" },
-            { word: "Hospital", meaning: "병원" }
-        ];
-
-        // 현재 라운드에서 사용되는 셔플된 단어 목록
-        let currentSessionWords = [];
-
-        // 알파벳 블록용 블록 컬러 테마
-        const pastelColors = [
-            'bg-red-200 text-red-800 border-red-300',
-            'bg-orange-200 text-orange-800 border-orange-300',
-            'bg-amber-200 text-amber-800 border-amber-300',
-            'bg-green-200 text-green-800 border-green-300',
-            'bg-emerald-200 text-emerald-800 border-emerald-300',
-            'bg-sky-200 text-sky-800 border-sky-300',
-            'bg-indigo-200 text-indigo-800 border-indigo-300',
-            'bg-purple-200 text-purple-800 border-purple-300',
-            'bg-pink-200 text-pink-800 border-pink-300'
-        ];
-
-        // 상태 변수
-        let currentIndex = 0;
-        let score = 0;
-        let starCount = 0;
-        let usedHintInWord = false;
-        let currentTargetWord = "";
-        let shuffledLetters = [];
-        let userAnswers = [];
-        let draggedElement = null;
+        // Web Audio Synth BGM generator (Retro Chiptune Sound Engine)
         let audioCtx = null;
-        let speechRate = 0.85; // 기본 발음 속도 (보통 0.85)
+        let isPlayingBGM = false;
+        let bgmTimer = null;
+        let currentBgmIndex = 0;
 
-        // Web Audio API 효과음
+        const bgmPlaylist = [
+            { title: "프리스타일 - Y (FT. 호연주)", notes: [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25] },
+            { title: "YUI - Goodbye Days", notes: [329.63, 392.00, 440.00, 392.00, 329.63, 293.66, 261.63] },
+            { title: "윤도현 - 사랑했나봐", notes: [392.00, 440.00, 523.25, 440.00, 392.00, 349.23, 329.63] },
+            { title: "MC몽 - I Love U Oh Thank U", notes: [523.25, 493.88, 440.00, 392.00, 440.00, 493.88, 523.25] }
+        ];
+
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        function playSound(type) {
+        // 레트로 팝 사운드 효과음
+        function playSound(type = 'click') {
             initAudio();
             if (!audioCtx) return;
 
@@ -296,334 +511,473 @@
 
             const now = audioCtx.currentTime;
 
-            if (type === 'pop') {
+            if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'tab') {
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(400, now);
-                osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
-                gain.gain.setValueAtTime(0.3, now);
+                osc.frequency.setValueAtTime(440, now);
+                osc.frequency.exponentialRampToValueAtTime(880, now + 0.08);
+                gain.gain.setValueAtTime(0.2, now);
                 gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
                 osc.start(now);
                 osc.stop(now + 0.08);
-            } else if (type === 'correct') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(523.25, now); // C5
-                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
-                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
-                osc.frequency.setValueAtTime(1046.50, now + 0.25); // C6
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
-                osc.start(now);
-                osc.stop(now + 0.45);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(200, now);
-                osc.frequency.setValueAtTime(140, now + 0.15);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.3);
             }
         }
 
-        // 배열 셔플 함수 (Fisher-Yates)
-        function shuffleArray(array) {
-            const arr = [...array];
-            for (let i = arr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [arr[i], arr[j]] = [arr[j], arr[i]];
+        function toggleBGM() {
+            initAudio();
+            isPlayingBGM = !isPlayingBGM;
+            const icon = document.getElementById('bgm-icon');
+
+            if (isPlayingBGM) {
+                icon.className = 'fa-solid fa-pause';
+                playRetroMelody();
+            } else {
+                icon.className = 'fa-solid fa-play';
+                if (bgmTimer) clearInterval(bgmTimer);
             }
-            return arr;
         }
 
-        // 새로운 학습 세션 시작 (문제 순서 랜덤화)
-        function startNewSession() {
-            currentSessionWords = shuffleArray(masterWordList);
-            currentIndex = 0;
-            loadWord(currentIndex);
+        function changeBGM(val) {
+            currentBgmIndex = parseInt(val);
+            document.getElementById('bgm-title').innerText = bgmPlaylist[currentBgmIndex].title;
+            if (isPlayingBGM) {
+                if (bgmTimer) clearInterval(bgmTimer);
+                playRetroMelody();
+            }
         }
 
-        // 초기화 및 게임 시작
-        window.onload = () => {
-            startNewSession();
+        function playRetroMelody() {
+            if (!audioCtx) return;
+            const notes = bgmPlaylist[currentBgmIndex].notes;
+            let noteIdx = 0;
+
+            bgmTimer = setInterval(() => {
+                if (!isPlayingBGM) return;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(notes[noteIdx], audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+
+                noteIdx = (noteIdx + 1) % notes.length;
+            }, 350);
+        }
+
+        // ----- DATA PERSISTENCE (LocalStorage) -----
+        const storageKey = 'cyworld_minihomepage_data_v1';
+
+        const defaultData = {
+            title: "★~ 난... ㄱ├끔 눈물을 흘린ㄷ├... ~★",
+            bio: "퍼가요~♡\n2000년대 감성 충만했던 그 시절.\n음악 들으면서 도토리 선물받던 미니홈피에 오신 걸 환영합니다!\n일촌평 많이 남겨주세요...★",
+            mood: "맑음 ☀️",
+            profileImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+            ilchonpyung: [
+                { id: 1, nick: "★길동이★", msg: "퍼가요~♡ 퍼갈 땐 댓글 필수인 거 알지?", date: "2004.10.14" },
+                { id: 2, nick: "영희공주", msg: "오늘 미니룸 완죤 예쁘게 꾸몄네 >_<", date: "2004.10.15" }
+            ],
+            diaries: [
+                { id: 1, title: "싸이월드 미니홈피 오픈!", weather: "맑음 ☀️", mood: "신남 🎵", content: "드디어 내 미니홈피 개장했다! 도토리 장전 완료 ㅋㅋ 다들 방명록 남겨줘~", date: "2004.10.12 15:30" },
+                { id: 2, title: "오늘의 감성 한 조각...", weather: "비 ☔", mood: "감성적 🌙", content: "비가 오는 날엔 YUI 노래를 들으며 일기를 쓴다... 난 ㄱ├끔 눈물을 흘린다...", date: "2004.10.15 21:10" }
+            ],
+            photos: [
+                { id: 1, title: "2004년 한강 나들이 📸", url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80", desc: "날씨 좋았던 가을날! 한강에서 치킨 먹던 날 추억돋네 ㅎㅎ", date: "2004.10.10" },
+                { id: 2, title: "우리의 아지트 미니룸!", url: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600&auto=format&fit=crop&q=80", desc: "도토리 50개 들여서 새로 세팅한 거실 배치 어떤가요?!", date: "2004.10.13" }
+            ],
+            guestbook: [
+                { id: 1, name: "철수대장", avatar: "👦", secret: false, msg: "야 일촌신청 받아라! 파도타기 타고 들어옴 ㅋㅋㅋ", date: "2004.10.15 11:20" },
+                { id: 2, name: "민수짱", avatar: "🐱", secret: true, msg: "비밀글입니다 🔒 (너 어제 버디버디 로그인 안 했더라?)", date: "2004.10.15 14:05" }
+            ]
         };
 
-        // 특정 단어 로드
-        function loadWord(index) {
-            if (index >= currentSessionWords.length) {
-                showCompletionModal();
+        let cyData = JSON.parse(localStorage.getItem(storageKey)) || defaultData;
+
+        function saveData() {
+            localStorage.setItem(storageKey, JSON.stringify(cyData));
+        }
+
+        // ----- TAB NAVIGATION -----
+        function switchTab(tabName) {
+            playSound('tab');
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            });
+            document.querySelectorAll('.cy-tab').forEach(el => el.classList.remove('active'));
+
+            const targetContent = document.getElementById(`tab-${tabName}`);
+            const targetBtn = document.getElementById(`tab-btn-${tabName}`);
+
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+                targetContent.classList.add('flex');
+            }
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+        }
+
+        // ----- EDIT FUNCTIONS -----
+        function editHomepageTitle() {
+            playSound('click');
+            const newTitle = prompt("미니홈피 타이틀을 입력하세요:", cyData.title);
+            if (newTitle && newTitle.trim() !== "") {
+                cyData.title = newTitle.trim();
+                document.getElementById('homepage-title').innerText = cyData.title;
+                saveData();
+            }
+        }
+
+        function editBio() {
+            playSound('click');
+            const newBio = prompt("프로필 소개글을 입력하세요:", cyData.bio);
+            if (newBio !== null) {
+                cyData.bio = newBio;
+                document.getElementById('profile-bio').innerText = cyData.bio;
+                saveData();
+            }
+        }
+
+        function saveMood(val) {
+            playSound('click');
+            cyData.mood = val;
+            saveData();
+        }
+
+        function changeProfileImg() {
+            playSound('click');
+            const url = prompt("새 프로필 이미지 URL을 입력하세요:", cyData.profileImg);
+            if (url) {
+                cyData.profileImg = url;
+                document.getElementById('profile-img').src = url;
+                saveData();
+            }
+        }
+
+        function visitIlchon(name) {
+            if (!name) return;
+            playSound('click');
+            alert(`[파도타기 🏄‍♂️]\n'${name}' 님의 미니홈피로 이동합니다! (가상 이동)`);
+            document.getElementById('ilchon-select').value = "";
+        }
+
+        function triggerMinimeAction() {
+            playSound('click');
+            const speech = document.getElementById('avatar-speech');
+            speech.classList.remove('hidden');
+            setTimeout(() => {
+                speech.classList.add('hidden');
+            }, 2500);
+        }
+
+        function changeMiniroomTheme() {
+            playSound('click');
+            const bg = document.getElementById('miniroom-container');
+            const themes = ['#EAF4FA', '#FFF0F5', '#F0FFF0', '#FFFDE7'];
+            const randomBg = themes[Math.floor(Math.random() * themes.length)];
+            bg.style.backgroundColor = randomBg;
+        }
+
+        // ----- ILCHONPYUNG (HOME) -----
+        function renderIlchonpyung() {
+            const list = document.getElementById('ilchonpyung-list');
+            document.getElementById('ilchonpyung-count').innerText = cyData.ilchonpyung.length;
+            list.innerHTML = '';
+
+            cyData.ilchonpyung.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between text-xs bg-slate-50 p-2 rounded border border-slate-200 dotted-line';
+                div.innerHTML = `
+                    <div class="flex items-center gap-2 truncate">
+                        <span class="font-bold text-cyOrange shrink-0">• ${escapeHtml(item.nick)}</span>
+                        <span class="text-slate-700 truncate">${escapeHtml(item.msg)}</span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 text-[10px] text-slate-400">
+                        <span>(${item.date})</span>
+                        <button onclick="deleteIlchonpyung(${item.id})" class="hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function addIlchonpyung() {
+            playSound('click');
+            const nickInput = document.getElementById('ilchon-nick-input');
+            const msgInput = document.getElementById('ilchon-msg-input');
+
+            if (!nickInput.value.trim() || !msgInput.value.trim()) {
+                alert("일촌명과 내용을 모두 입력해주세요!");
                 return;
             }
 
-            usedHintInWord = false;
-            const currentObj = currentSessionWords[index];
-            currentTargetWord = currentObj.word;
-            
-            document.getElementById('word-meaning').innerText = currentObj.meaning;
-            document.getElementById('stage-text').innerText = `${index + 1} / ${currentSessionWords.length}`;
-            document.getElementById('hint-box').innerText = '';
+            const newEntry = {
+                id: Date.now(),
+                nick: nickInput.value.trim(),
+                msg: msgInput.value.trim(),
+                date: new Date().toISOString().split('T')[0].replace(/-/g, '.')
+            };
 
-            userAnswers = new Array(currentTargetWord.length).fill(null);
+            cyData.ilchonpyung.unshift(newEntry);
+            saveData();
+            renderIlchonpyung();
 
-            // 알파벳 블록 구성 (정답 알파벳 + 교란용 무작위 알파벳 1개 추가)
-            const letters = currentTargetWord.split('').map((char, id) => ({
-                id: `char-${id}-${Date.now()}`,
-                char: char,
-                colorClass: pastelColors[Math.floor(Math.random() * pastelColors.length)]
-            }));
-
-            // 5학년 난이도를 위해 추가 알파벳 1개 추가
-            const extraAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const randomChar = extraAlphabet[Math.floor(Math.random() * extraAlphabet.length)];
-            letters.push({
-                id: `extra-0-${Date.now()}`,
-                char: randomChar,
-                colorClass: pastelColors[Math.floor(Math.random() * pastelColors.length)]
-            });
-
-            // 스펠링 블록 순서 무작위 셔플
-            shuffledLetters = shuffleArray(letters);
-
-            renderBoard();
-            
-            setTimeout(() => {
-                speakCurrentWord();
-            }, 300);
+            msgInput.value = '';
         }
 
-        // 보드 (Drop Zone 및 알파벳 블록 목록) 렌더링
-        function renderBoard() {
-            const dropContainer = document.getElementById('drop-zone-container');
-            const blockContainer = document.getElementById('letter-blocks-container');
+        function deleteIlchonpyung(id) {
+            playSound('click');
+            cyData.ilchonpyung = cyData.ilchonpyung.filter(i => i.id !== id);
+            saveData();
+            renderIlchonpyung();
+        }
 
-            dropContainer.innerHTML = '';
-            blockContainer.innerHTML = '';
+        // ----- DIARY & CALENDAR -----
+        let currentYear = 2004;
+        let currentMonth = 10;
 
-            // 1. Drop Zone 생성
-            for (let i = 0; i < currentTargetWord.length; i++) {
-                const zone = document.createElement('div');
-                zone.className = `drop-zone w-10 h-12 sm:w-14 sm:h-16 rounded-2xl border-3 border-dashed border-slate-300 bg-white/70 flex items-center justify-center text-xl sm:text-3xl font-bold font-fredoka relative transition-all`;
-                zone.dataset.index = i;
+        function renderCalendar() {
+            document.getElementById('calendar-month-year').innerText = `${currentYear}. ${currentMonth < 10 ? '0' + currentMonth : currentMonth}`;
+            const daysContainer = document.getElementById('calendar-days');
+            daysContainer.innerHTML = '';
 
-                zone.addEventListener('dragover', handleDragOver);
-                zone.addEventListener('dragleave', handleDragLeave);
-                zone.addEventListener('drop', handleDrop);
-                zone.addEventListener('click', () => handleZoneClick(i));
+            const firstDay = new Date(currentYear, currentMonth - 1, 1).getDay();
+            const lastDate = new Date(currentYear, currentMonth, 0).getDate();
 
-                if (userAnswers[i]) {
-                    const block = createBlockElement(userAnswers[i], true, i);
-                    zone.appendChild(block);
+            for (let i = 0; i < firstDay; i++) {
+                daysContainer.appendChild(document.createElement('div'));
+            }
+
+            for (let day = 1; day <= lastDate; day++) {
+                const dayEl = document.createElement('button');
+                dayEl.className = 'py-1 rounded hover:bg-cyOrangeSoft text-slate-700 font-bold text-center';
+                dayEl.innerText = day;
+                if (day === 15) {
+                    dayEl.classList.add('bg-cyOrange', 'text-white');
                 }
+                dayEl.onclick = () => playSound('click');
+                daysContainer.appendChild(dayEl);
+            }
+        }
 
-                dropContainer.appendChild(zone);
+        function changeMonth(delta) {
+            playSound('click');
+            currentMonth += delta;
+            if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+            if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+            renderCalendar();
+        }
+
+        function renderDiaries() {
+            const list = document.getElementById('diary-list');
+            list.innerHTML = '';
+
+            if (cyData.diaries.length > 0) {
+                document.getElementById('recent-post-notice').innerText = `새 다이어리 글: "${cyData.diaries[0].title}"`;
             }
 
-            // 2. 하단 알파벳 블록 생성
-            shuffledLetters.forEach((item) => {
-                const isUsed = userAnswers.some(ans => ans && ans.id === item.id);
-
-                if (!isUsed) {
-                    const block = createBlockElement(item, false);
-                    blockContainer.appendChild(block);
-                }
+            cyData.diaries.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2 relative';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center border-b pb-1.5 border-slate-200">
+                        <span class="font-bold text-xs text-indigo-900">${escapeHtml(item.title)}</span>
+                        <div class="flex items-center gap-2 text-[10px] text-slate-500">
+                            <span>${item.weather}</span>
+                            <span>${item.mood}</span>
+                            <span>${item.date}</span>
+                            <button onclick="deleteDiary(${item.id})" class="text-slate-400 hover:text-red-500 ml-1"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-700 leading-relaxed whitespace-pre-wrap">${escapeHtml(item.content)}</p>
+                `;
+                list.appendChild(card);
             });
         }
 
-        // 블록 DOM 요소 생성 Helper
-        function createBlockElement(item, inZone, zoneIndex = null) {
-            const block = document.createElement('div');
-            block.className = `letter-block w-9 h-11 sm:w-12 sm:h-14 rounded-2xl ${item.colorClass} border-b-4 font-fredoka font-bold text-xl sm:text-2xl flex items-center justify-center cursor-pointer select-none`;
-            block.innerText = item.char;
-            block.draggable = true;
-            block.dataset.id = item.id;
-            block.dataset.char = item.char;
+        function openDiaryModal() { playSound('click'); document.getElementById('modal-diary').classList.remove('hidden'); document.getElementById('modal-diary').classList.add('flex'); }
+        function closeModal(id) { playSound('click'); document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
 
-            block.addEventListener('dragstart', (e) => {
-                draggedElement = { item, fromZoneIndex: zoneIndex };
-                e.dataTransfer.setData('text/plain', item.id);
-                block.classList.add('opacity-50');
+        function saveDiaryPost() {
+            playSound('click');
+            const title = document.getElementById('new-diary-title').value.trim();
+            const weather = document.getElementById('new-diary-weather').value;
+            const mood = document.getElementById('new-diary-mood').value;
+            const content = document.getElementById('new-diary-content').value.trim();
+
+            if (!title || !content) {
+                alert("제목과 내용을 작성해주세요!");
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()} ${now.getHours()}:${now.getMinutes()<10?'0':''}${now.getMinutes()}`;
+
+            cyData.diaries.unshift({
+                id: Date.now(),
+                title, weather, mood, content, date: dateStr
             });
 
-            block.addEventListener('dragend', () => {
-                block.classList.remove('opacity-50');
-                draggedElement = null;
-            });
+            saveData();
+            renderDiaries();
+            closeModal('modal-diary');
 
-            block.addEventListener('click', (e) => {
-                e.stopPropagation();
-                playSound('pop');
-
-                if (inZone) {
-                    userAnswers[zoneIndex] = null;
-                    renderBoard();
-                } else {
-                    const emptyIndex = userAnswers.findIndex(val => val === null);
-                    if (emptyIndex !== -1) {
-                        userAnswers[emptyIndex] = item;
-                        renderBoard();
-                        checkAnswer();
-                    }
-                }
-            });
-
-            return block;
+            document.getElementById('new-diary-title').value = '';
+            document.getElementById('new-diary-content').value = '';
         }
 
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.currentTarget.classList.add('drag-over');
+        function deleteDiary(id) {
+            playSound('click');
+            cyData.diaries = cyData.diaries.filter(d => d.id !== id);
+            saveData();
+            renderDiaries();
         }
 
-        function handleDragLeave(e) {
-            e.currentTarget.classList.remove('drag-over');
-        }
+        // ----- PHOTO ALBUM -----
+        function renderPhotos() {
+            const list = document.getElementById('photo-list');
+            list.innerHTML = '';
 
-        function handleDrop(e) {
-            e.preventDefault();
-            e.currentTarget.classList.remove('drag-over');
-
-            const targetIndex = parseInt(e.currentTarget.dataset.index);
-
-            if (draggedElement) {
-                playSound('pop');
-
-                if (draggedElement.fromZoneIndex !== null) {
-                    userAnswers[draggedElement.fromZoneIndex] = null;
-                }
-
-                userAnswers[targetIndex] = draggedElement.item;
-                renderBoard();
-                checkAnswer();
-            }
-        }
-
-        function handleZoneClick(index) {
-            if (userAnswers[index]) {
-                playSound('pop');
-                userAnswers[index] = null;
-                renderBoard();
-            }
-        }
-
-        // 정답 체크 로직 및 보너스/별 보상
-        function checkAnswer() {
-            const isFilled = userAnswers.every(ans => ans !== null);
-
-            if (isFilled) {
-                const currentSpelling = userAnswers.map(ans => ans.char).join('');
-
-                if (currentSpelling === currentTargetWord) {
-                    playSound('correct');
-                    
-                    // 점수 및 별 계산 (힌트 미사용 시 추가 보너스)
-                    let earnedPoints = 100;
-                    if (!usedHintInWord) {
-                        earnedPoints += 20; // 힌트 미사용 보너스
-                        starCount++;
-                        document.getElementById('star-count').innerText = starCount;
-                    }
-                    
-                    score += earnedPoints;
-                    document.getElementById('score-text').innerText = score;
-
-                    confetti({
-                        particleCount: 90,
-                        spread: 70,
-                        origin: { y: 0.6 }
-                    });
-
-                    const dropContainer = document.getElementById('drop-zone-container');
-                    dropContainer.classList.add('animate-success');
-
-                    setTimeout(() => {
-                        dropContainer.classList.remove('animate-success');
-                        nextWord();
-                    }, 1000);
-
-                } else {
-                    playSound('wrong');
-                    const dropContainer = document.getElementById('drop-zone-container');
-                    dropContainer.classList.add('animate-shake');
-                    setTimeout(() => {
-                        dropContainer.classList.remove('animate-shake');
-                    }, 500);
-                }
-            }
-        }
-
-        function resetCurrentWord() {
-            playSound('pop');
-            userAnswers = new Array(currentTargetWord.length).fill(null);
-            renderBoard();
-        }
-
-        function nextWord() {
-            currentIndex++;
-            loadWord(currentIndex);
-        }
-
-        // 힌트 사용
-        function useHint() {
-            playSound('pop');
-            usedHintInWord = true;
-            
-            // 아직 채워지지 않은 첫 번째 빈칸의 알파벳을 힌트로 안내
-            const emptyIndex = userAnswers.findIndex(val => val === null);
-            const targetPos = emptyIndex !== -1 ? emptyIndex : 0;
-            const correctChar = currentTargetWord[targetPos];
-
-            const hintBox = document.getElementById('hint-box');
-            hintBox.innerText = `💡 힌트: ${targetPos + 1}번째 글자는 '${correctChar}' 입니다!`;
-        }
-
-        // 발음 속도 변경
-        function changeSpeechRate(rateValue) {
-            speechRate = parseFloat(rateValue);
-            speakCurrentWord();
-        }
-
-        // SpeechSynthesis API (영단어 발음 - 설정된 속도 반영)
-        function speakCurrentWord(text = currentTargetWord) {
-            playSound('pop');
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // 이전 음성 정지
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.lang = 'en-US';
-                utterance.rate = speechRate; // 현재 선택된 발음 속도 적용 (0.65 / 0.85 / 1.05)
-                window.speechSynthesis.speak(utterance);
-            }
-        }
-
-        // 완료 모달 및 별점 요약
-        function showCompletionModal() {
-            document.getElementById('final-score').innerText = `${score}점`;
-            document.getElementById('final-stars').innerText = `${starCount}개`;
-            
-            // 별점에 따른 세부 표시
-            const starsDisplay = document.getElementById('stars-display');
-            if (starCount >= 15) {
-                starsDisplay.innerHTML = `<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>`;
-            } else if (starCount >= 8) {
-                starsDisplay.innerHTML = `<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>`;
-            } else {
-                starsDisplay.innerHTML = `<i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>`;
-            }
-
-            document.getElementById('completion-modal').classList.remove('hidden');
-            confetti({
-                particleCount: 200,
-                spread: 100,
-                origin: { y: 0.5 }
+            cyData.photos.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2 relative';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs font-bold text-slate-800 border-b pb-1">
+                        <span class="truncate">${escapeHtml(item.title)}</span>
+                        <button onclick="deletePhoto(${item.id})" class="text-[10px] text-slate-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                    <div class="w-full h-40 bg-slate-200 rounded-lg overflow-hidden border border-slate-300">
+                        <img src="${item.url}" alt="Photo" class="w-full h-full object-cover hover:scale-105 transition">
+                    </div>
+                    <p class="text-xs text-slate-600">${escapeHtml(item.desc)}</p>
+                    <span class="text-[10px] text-slate-400 text-right">${item.date}</span>
+                `;
+                list.appendChild(card);
             });
         }
 
-        function restartGame() {
-            score = 0;
-            starCount = 0;
-            document.getElementById('score-text').innerText = '0';
-            document.getElementById('star-count').innerText = '0';
-            document.getElementById('completion-modal').classList.add('hidden');
-            startNewSession(); // 새로운 세션 시작 시 문제 순서 재생성 및 셔플
+        function openPhotoModal() { playSound('click'); document.getElementById('modal-photo').classList.remove('hidden'); document.getElementById('modal-photo').classList.add('flex'); }
+
+        function savePhotoPost() {
+            playSound('click');
+            const title = document.getElementById('new-photo-title').value.trim();
+            let url = document.getElementById('new-photo-url').value.trim();
+            const desc = document.getElementById('new-photo-desc').value.trim();
+
+            if (!title) { alert("사진 제목을 입력해주세요!"); return; }
+            if (!url) url = "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=600&auto=format&fit=crop&q=80";
+
+            cyData.photos.unshift({
+                id: Date.now(),
+                title, url, desc,
+                date: new Date().toISOString().split('T')[0].replace(/-/g, '.')
+            });
+
+            saveData();
+            renderPhotos();
+            closeModal('modal-photo');
+
+            document.getElementById('new-photo-title').value = '';
+            document.getElementById('new-photo-url').value = '';
+            document.getElementById('new-photo-desc').value = '';
         }
+
+        function deletePhoto(id) {
+            playSound('click');
+            cyData.photos = cyData.photos.filter(p => p.id !== id);
+            saveData();
+            renderPhotos();
+        }
+
+        // ----- GUESTBOOK -----
+        function renderGuestbook() {
+            const list = document.getElementById('guestbook-list');
+            list.innerHTML = '';
+
+            cyData.guestbook.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col gap-2 relative';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center bg-slate-100 p-1.5 rounded text-xs">
+                        <div class="flex items-center gap-1.5 font-bold text-slate-700">
+                            <span>${item.avatar}</span>
+                            <span>${escapeHtml(item.name)}</span>
+                            ${item.secret ? '<span class="text-[10px] text-amber-600 bg-amber-100 px-1 rounded">비밀글 🔒</span>' : ''}
+                        </div>
+                        <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                            <span>${item.date}</span>
+                            <button onclick="deleteGuestbook(${item.id})" class="hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-700 p-1 leading-relaxed">${item.secret ? '🔒 작성자와 홈피 주인만 볼 수 있는 비밀글입니다.' : escapeHtml(item.msg)}</p>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function addGuestbookEntry() {
+            playSound('click');
+            const name = document.getElementById('guest-name-input').value.trim();
+            const msg = document.getElementById('guest-msg-input').value.trim();
+            const secret = document.getElementById('guest-secret-check').checked;
+            const avatar = document.getElementById('guest-avatar-select').value;
+
+            if (!name || !msg) {
+                alert("이름과 내용을 모두 입력해주세요!");
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}.${now.getMonth()+1}.${now.getDate()} ${now.getHours()}:${now.getMinutes()<10?'0':''}${now.getMinutes()}`;
+
+            cyData.guestbook.unshift({
+                id: Date.now(),
+                name, avatar, secret, msg, date: dateStr
+            });
+
+            saveData();
+            renderGuestbook();
+
+            document.getElementById('guest-name-input').value = '';
+            document.getElementById('guest-msg-input').value = '';
+            document.getElementById('guest-secret-check').checked = false;
+        }
+
+        function deleteGuestbook(id) {
+            playSound('click');
+            cyData.guestbook = cyData.guestbook.filter(g => g.id !== id);
+            saveData();
+            renderGuestbook();
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // ----- INITIALIZATION -----
+        window.onload = () => {
+            document.getElementById('homepage-title').innerText = cyData.title;
+            document.getElementById('profile-bio').innerText = cyData.bio;
+            document.getElementById('profile-img').src = cyData.profileImg;
+            document.getElementById('today-mood').value = cyData.mood || "맑음 ☀️";
+
+            renderIlchonpyung();
+            renderCalendar();
+            renderDiaries();
+            renderPhotos();
+            renderGuestbook();
+        };
     </script>
 </body>
 </html>
