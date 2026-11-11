@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조선시대 시간여행 역사 탐험대 (초등 5학년)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Gowun Batang & Jua for Traditional Kid Feel) -->
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Jua&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hanji: '#FDFBF7',
+                        hanjiBorder: '#E6DCCB',
+                        joseonRed: '#D32F2F',
+                        joseonBlue: '#1976D2',
+                        joseonGold: '#FFA000',
+                        joseonGreen: '#388E3C',
+                        darkWood: '#4A3525',
+                    },
+                    fontFamily: {
+                        jua: ['Jua', 'sans-serif'],
+                        batang: ['Gowun Batang', 'serif'],
+                        nanum: ['Nanum Gothic', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #F4EBE1;
+            background-image: radial-gradient(#E5D7C5 1px, transparent 1px);
+            background-size: 16px 16px;
+            user-select: none;
+        }
+
+        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-batang { font-family: 'Gowun Batang', serif; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #EFE6D8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4A482;
+            border-radius: 4px;
+        }
+
+        /* Traditional Pattern Card Shadow */
+        .trad-card {
+            background: #FDFBF7;
+            border: 3px solid #6E5340;
+            box-shadow: 0 8px 0 #4A3525, 0 10px 15px rgba(0,0,0,0.1);
+            border-radius: 1.25rem;
+        }
+
+        .btn-push {
+            transition: all 0.1s ease;
+            box-shadow: 0 5px 0 #4A3525;
+        }
+        .btn-push:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #4A3525;
+        }
+
+        /* Animated Pulse for Quiz Status */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col items-center justify-between p-2 sm:p-4">
+
+    <!-- Header Navigation -->
+    <header class="w-full max-w-4xl bg-[#5C4033] text-amber-100 p-3 sm:p-4 rounded-2xl border-4 border-[#3D291F] shadow-lg flex justify-between items-center mb-3">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="showHomeScreen()">
+            <span class="text-2xl sm:text-3xl">🏯</span>
+            <div>
+                <h1 class="font-jua text-lg sm:text-2xl text-amber-300 leading-tight">조선시대 시간여행 역사 탐험대</h1>
+                <p class="text-[11px] sm:text-xs text-amber-200/80 font-batang">초등학교 5학년 역사 완벽 마스터!</p>
+            </div>
+        </div>
+
+        <!-- Right Side Stats -->
+        <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm font-jua">
+            <div class="bg-[#3D291F] px-3 py-1.5 rounded-xl border border-amber-700/50 flex items-center gap-1.5">
+                <span class="text-amber-400"><i class="fa-solid fa-star"></i></span>
+                <span>점수: <span id="header-score" class="text-amber-300 text-base">0</span>점</span>
+            </div>
+            <div class="bg-[#3D291F] px-3 py-1.5 rounded-xl border border-amber-700/50 flex items-center gap-1.5">
+                <span class="text-red-400"><i class="fa-solid fa-medal"></i></span>
+                <span>훈장: <span id="header-badges" class="text-amber-300 text-base">0</span>/4</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="w-full max-w-4xl flex-1 flex flex-col justify-center items-center relative">
+
+        <!-- 1. HOME SCREEN (Timeline Era Map) -->
+        <section id="screen-home" class="w-full trad-card p-4 sm:p-6 flex flex-col gap-5">
+            <!-- Banner -->
+            <div class="bg-amber-100/80 border-2 border-amber-300 rounded-xl p-3 sm:p-4 flex items-center gap-3 sm:gap-4">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-amber-200 rounded-full flex items-center justify-center text-3xl sm:text-4xl shadow shrink-0">
+                    🧙‍♂️
+                </div>
+                <div>
+                    <h2 class="font-jua text-base sm:text-lg text-amber-900">안녕! 나는 역사 길잡이 '조선도사'야!</h2>
+                    <p class="text-xs sm:text-sm text-slate-700 mt-0.5 leading-relaxed">
+                        1392년 조선의 건국부터 개항기까지 시간 순서대로 퀴즈를 풀며 역사를 마스터해볼까? 
+                        모든 시대의 퀴즈를 맞추고 <b>'조선 역사 마스터 훈장'</b>을 획득해 봐!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Chronological Era Map -->
+            <div class="flex flex-col gap-3">
+                <h3 class="font-jua text-base sm:text-lg text-slate-800 flex items-center gap-2">
+                    <span>📜</span> 조선시대 시간 순서별 타임라인 지도
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4" id="era-card-container">
+                    <!-- Cards dynamically generated -->
+                </div>
+            </div>
+
+            <!-- Bottom Actions -->
+            <div class="flex justify-between items-center pt-3 border-t border-amber-900/10 gap-2">
+                <button onclick="showReviewScreen()" class="btn-push bg-amber-700 hover:bg-amber-800 text-white font-jua text-xs sm:text-sm px-4 py-2.5 rounded-xl flex items-center gap-2">
+                    <i class="fa-solid fa-book-bookmark"></i> 오답노트 복습하기 (<span id="wrong-count">0</span>)
+                </button>
+                <button onclick="resetAllProgress()" class="text-xs text-slate-500 hover:text-red-600 underline">
+                    초기화
+                </button>
+            </div>
+        </section>
+
+        <!-- 2. QUIZ PLAY SCREEN -->
+        <section id="screen-quiz" class="w-full trad-card p-4 sm:p-6 flex-col gap-4 hidden">
+            <!-- Quiz Progress & Era Header -->
+            <div class="flex justify-between items-center border-b-2 border-dashed border-amber-800/20 pb-3">
+                <div class="flex items-center gap-2">
+                    <span id="quiz-era-badge" class="bg-amber-800 text-amber-100 font-jua text-xs px-2.5 py-1 rounded-lg">
+                        1시대
+                    </span>
+                    <h3 id="quiz-era-title" class="font-jua text-sm sm:text-base text-slate-800">
+                        건국과 기틀 마련
+                    </h3>
+                </div>
+                <div class="font-jua text-xs sm:text-sm text-amber-900">
+                    문제 <span id="quiz-current-num" class="text-joseonRed text-base">1</span> / <span id="quiz-total-num">3</span>
+                </div>
+            </div>
+
+            <!-- Mascot Speech / Encourage Box -->
+            <div class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3">
+                <div id="mascot-avatar" class="text-3xl shrink-0 animate-bounce-slow">
+                    🧙‍♂️
+                </div>
+                <div id="mascot-msg" class="text-xs sm:text-sm font-batang text-amber-900 leading-snug">
+                    "문제를 잘 읽고 정답을 골라봐! 힌트가 필요하면 교과서 개념을 떠올려봐!"
+                </div>
+            </div>
+
+            <!-- Quiz Question Box -->
+            <div class="bg-white border-2 border-amber-800/30 rounded-2xl p-4 sm:p-5 shadow-inner flex flex-col gap-3">
+                <div class="flex items-start gap-2">
+                    <span id="quiz-type-tag" class="bg-joseonBlue text-white font-jua text-[11px] px-2 py-0.5 rounded shrink-0 mt-0.5">
+                        4지선다
+                    </span>
+                    <h2 id="quiz-question" class="font-jua text-base sm:text-lg text-slate-900 leading-snug">
+                        질문 텍스트가 들어갑니다.
+                    </h2>
+                </div>
+                <!-- Clue Image/Box if available -->
+                <div id="quiz-clue-box" class="hidden bg-amber-50/80 border border-amber-200 p-3 rounded-xl text-xs sm:text-sm text-amber-900 font-batang italic text-center">
+                    <!-- Dynamic Clue -->
+                </div>
+            </div>
+
+            <!-- Quiz Options Box -->
+            <div id="quiz-options-box" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 my-1">
+                <!-- Dynamic Options Buttons -->
+            </div>
+
+            <!-- Quiz Answer Feedback & Explanation Modal/Box (Initially Hidden) -->
+            <div id="quiz-explanation-box" class="hidden bg-emerald-50 border-2 border-emerald-400 rounded-xl p-4 flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                    <span id="result-icon" class="text-xl">✅</span>
+                    <h4 id="result-title" class="font-jua text-base text-emerald-900">정답입니다! (+10점)</h4>
+                </div>
+                <p id="explanation-text" class="text-xs sm:text-sm font-batang text-slate-700 leading-relaxed">
+                    해설 설명이 이곳에 작성됩니다.
+                </p>
+                <button id="btn-next-quiz" onclick="nextQuizQuestion()" class="btn-push self-end bg-joseonGreen hover:bg-emerald-700 text-white font-jua text-xs sm:text-sm px-5 py-2 rounded-xl mt-1">
+                    다음 문제로 이동 <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. ERA CLEAR SCREEN -->
+        <section id="screen-era-clear" class="w-full trad-card p-6 flex-col items-center text-center gap-5 hidden">
+            <div class="text-6xl animate-bounce-slow">🎉</div>
+            <div>
+                <span id="clear-era-name" class="bg-amber-200 text-amber-900 font-jua text-xs px-3 py-1 rounded-full">
+                    제 1시대
+                </span>
+                <h2 class="font-jua text-2xl sm:text-3xl text-amber-900 mt-2">시대 클리어 완료!</h2>
+                <p class="text-xs sm:text-sm text-slate-600 font-batang mt-1">
+                    축하합니다! 해당 시대의 모든 역사 퀴즈를 훌륭하게 완수하셨습니다.
+                </p>
+            </div>
+
+            <!-- Earned Badge Display -->
+            <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 w-full max-w-sm flex flex-col items-center gap-2">
+                <span class="text-xs font-jua text-amber-800">새로 획득한 역사 훈장</span>
+                <div id="clear-badge-icon" class="text-5xl my-1">🥇</div>
+                <div id="clear-badge-name" class="font-jua text-lg text-slate-800">조선 건국 탐험가</div>
+            </div>
+
+            <button onclick="showHomeScreen()" class="btn-push bg-joseonBlue hover:bg-blue-700 text-white font-jua text-base px-8 py-3 rounded-2xl">
+                타임라인 지도로 돌아가기
+            </button>
+        </section>
+
+        <!-- 4. REVIEW MODE (Wrong Questions) SCREEN -->
+        <section id="screen-review" class="w-full trad-card p-4 sm:p-6 flex-col gap-4 hidden">
+            <div class="flex justify-between items-center border-b-2 border-dashed border-amber-800/20 pb-3">
+                <h3 class="font-jua text-base sm:text-lg text-slate-800 flex items-center gap-2">
+                    <span>📖</span> 오답노트 (복습 모드)
+                </h3>
+                <button onclick="showHomeScreen()" class="text-xs text-slate-500 hover:text-slate-800 font-jua">
+                    <i class="fa-solid fa-house"></i> 메인으로
+                </button>
+            </div>
+
+            <div id="review-list-container" class="flex flex-col gap-3 max-h-[420px] overflow-y-auto pr-1">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-4 text-center text-xs text-slate-600 font-batang">
+        초등학교 5학년 사회(역사) 교과과정 연계 퀴즈 프로그램
+    </footer>
+
+    <script>
+        // Web Audio API Sound Engine
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            initAudio();
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(180, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            } else if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, now);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'fanfare') {
+                const notes = [440, 554.37, 659.25, 880];
+                notes.forEach((freq, i) => {
+                    const o = audioCtx.createOscillator();
+                    const g = audioCtx.createGain();
+                    o.connect(g);
+                    g.connect(audioCtx.destination);
+                    o.type = 'triangle';
+                    o.frequency.setValueAtTime(freq, now + (i * 0.12));
+                    g.gain.setValueAtTime(0.2, now + (i * 0.12));
+                    g.gain.linearRampToValueAtTime(0.01, now + (i * 0.12) + 0.3);
+                    o.start(now + (i * 0.12));
+                    o.stop(now + (i * 0.12) + 0.3);
+                });
+            }
+        }
+
+        // HISTORICAL DATABASE (Chronological order aligned with 5th grade curriculum)
+        const erasData = [
+            {
+                id: 1,
+                title: "1. 건국과 기틀 마련",
+                period: "1392년 ~ 15세기",
+                icon: "👑",
+                badgeIcon: "🏹",
+                badgeName: "조선 건국 탐험가",
+                desc: "태조 이성계의 조선 건국, 한양 수도 이전, 세종대왕의 훈민정음 창제와 과학 발전",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "1392년 고려를 무너뜨리고 '조선'을 세운 왕은 누구일까요?",
+                        clue: "💡 힌트: 신진사대부 정도전과 함께 위화도 회군을 이끌었던 장군 출신의 왕이에요.",
+                        options: ["태조 이성계", "세종대왕", "태종 이방원", "영조"],
+                        answer: 0,
+                        explanation: "태조 이성계는 1392년에 조선을 건국하고, 1394년 수도를 한양(지금의 서울)으로 옮겨 나라의 기틀을 마련했습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "조선의 수도인 '한양'은 유교 덕목인 인·의·예·지·신을 바탕으로 4대문(흥인지문, 숭례문 등)을 세웠다.",
+                        clue: "💡 힌트: 도성의 문 이름에는 유교의 기본 덕목이 들어가 있어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 한양 도성은 동쪽 흥인지문(인), 서쪽 돈의문(의), 남쪽 숭례문(예), 북쪽 숙정문(지) 등 유교적 정신을 담아 건립되었습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "백성들이 글을 몰라 겪는 어려움을 불쌍히 여겨 1443년에 '훈민정음(한글)'을 창제한 왕은 누구일까요?",
+                        clue: "💡 힌트: 집현전 학자들과 함께 학문을 연구하고 과학 기술을 발전시켰어요.",
+                        options: ["정조", "세종대왕", "광해군", "성종"],
+                        answer: 1,
+                        explanation: "세종대왕은 백성을 사랑하는 마음으로 훈민정음을 만들었습니다. 또한 측우기, 해시계(앙부일구), 자격루 등의 과학 기구 제작도 지원했습니다."
+                    },
+                    {
+                        type: "유물/인물 match",
+                        question: "노비 출신이었지만 뛰어난 재능으로 세종대왕의 발탁을 받아 해시계(앙부일구)와 측우기를 만든 과학자는 누구일까요?",
+                        clue: "💡 힌트: 물시계인 '자격루'를 만들어 자동으로 시간이 알려지도록 했어요.",
+                        options: ["장영실", "김정호", "이순신", "정약용"],
+                        answer: 0,
+                        explanation: "장영실은 노비 신분이었으나 세종대왕에 의해 능력을 인정받아 벼슬을 얻고, 조선의 뛰어난 과학 기술 발전에 큰 기여를 했습니다."
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "2. 조선의 시련과 극복",
+                period: "16세기 말 ~ 17세기",
+                icon: "⚔️",
+                badgeIcon: "🐢",
+                badgeName: "구국의 수호자",
+                desc: "임진왜란과 이순신 장군의 한산도·명량 대첩, 병자호란과 광해군의 중립 외교",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "1592년 일본(왜)이 조선을 침략하여 일어난 전쟁의 이름은 무엇일까요?",
+                        clue: "💡 힌트: 7년 동안 이어진 큰 전쟁으로 곽재우 등 의병들도 활약했어요.",
+                        options: ["병자호란", "임진왜란", "귀주대첩", "살수대첩"],
+                        answer: 1,
+                        explanation: "1592년 선조 때 일어난 임진왜란은 7년 동안 계속되었으며, 이순신 장군의 수군과 전국 각지의 의병들이 목숨을 바쳐 나라를 구했습니다."
+                    },
+                    {
+                        type: "유물/인물 match",
+                        question: "거북선(귀선)을 만들어 한산도 대첩, 명량 대첩 등 바다에서 일본군을 대파한 장군은 누구일까요?",
+                        clue: "💡 힌트: '신에게는 아직 12척의 배가 남아있사옵니다'라는 말을 남겼어요.",
+                        options: ["김유신", "이순신", "강감찬", "권율"],
+                        answer: 1,
+                        explanation: "충무공 이순신 장군은 철저한 준비와 탁월한 지략, 거북선 활용으로 조선의 바다를 지켜내 왜군의 물자 공급을 차단했습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "광해군은 명나라와 후금 사이에서 전쟁에 휘말리지 않기 위해 '중립 외교'를 펼쳤다.",
+                        clue: "💡 힌트: 실리를 중시하여 나라의 평화를 지키려 노력했어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 광해군은 새로 성장하는 후금과 저물어가는 명나라 사이에서 현실적인 중립 외교를 펼쳐 전쟁의 피해를 막고자 했습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "1636년 청나라가 조선을 침략하여 인조가 남한산성에서 항전하다가 굴복한 사건은 무엇일까요?",
+                        clue: "💡 힌트: 삼전도의 굴욕이라고도 부르는 추운 겨울의 전쟁이에요.",
+                        options: ["임진왜란", "병자호란", "정묘호란", "홍경래의 난"],
+                        answer: 1,
+                        explanation: "병자호란(1636년)은 청나라의 침략으로 인조가 남한산성에서 항전했으나 물자가 부족해 결국 삼전도에서 청나라와 신하의 예을 맺게 된 아픈 역사입니다."
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "3. 조선의 부흥과 변화",
+                period: "18세기",
+                icon: "📚",
+                badgeIcon: "🏰",
+                badgeName: "실용과 개혁의 학자",
+                desc: "영조·정조의 탕평책, 정약용과 거중기를 이용한 수원 화성 건축, 김정호의 대동여지도",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "신하들 사이의 붕당 갈등을 줄이고 골고루 인재를 등용하기 위해 영조와 정조가 실시한 정책은 무엇일까요?",
+                        clue: "💡 힌트: '한쪽으로 치우치지 않고 공평하게' 한다는 뜻이에요.",
+                        options: ["탕평책", "대동법", "과전법", "신문고"],
+                        answer: 0,
+                        explanation: "영조와 정조는 특정 붕당에 편중되지 않고 능력이 있는 인재를 두루 등용하는 '탕평책'을 펼쳐 정치를 안정시키고 문화를 발전시켰습니다."
+                    },
+                    {
+                        type: "유물/인물 match",
+                        question: "정조 때 실학자 정약용이 무거운 돌을 쉽게 올리기 위해 도르래의 원리를 이용해 만든 도구는 무엇일까요?",
+                        clue: "💡 힌트: 이 도구 덕분에 수원 화성을 훨씬 빠르고 안전하게 쌓을 수 있었어요.",
+                        options: ["거중기", "측우기", "자격루", "혼천의"],
+                        answer: 0,
+                        explanation: "정약용이 발명한 '거중기'는 도르래 원리를 이용해 적은 힘으로도 무거운 돌을 들 수 있게 하여 수원 화성 공사 기간과 비용을 크게 줄였습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "조선 후기 백성들의 삶에 도움이 되는 실용적인 학문인 '실학'이 발전하였다.",
+                        clue: "💡 힌트: 실사구시(사실에 바탕을 두고 진리를 탐구함) 정신이 강조되었어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 실학자들은 학문에만 치중하던 기존 성리학에서 벗어나 농업 발전, 상공업 육성, 역사 및 지리 연구 등 실제 생활에 도움 되는 학문을 연구했습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "조선 전도를 직접 발로 뛰며 조사하여 만든 대형 지도인 '대동여지도'를 제작한 인물은 누구일까요?",
+                        clue: "💡 힌트: 목판으로 인쇄하여 누구나 쉽게 가지고 다닐 수 있게 접이식으로 만들었어요.",
+                        options: ["김정호", "정약용", "박지원", "김홍도"],
+                        answer: 0,
+                        explanation: "고산자 김정호는 우리나라 산맥과 물길, 도로망이 정밀하게 표시된 목판본 지도인 '대동여지도'를 완성했습니다."
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "4. 조선 후기와 개항",
+                period: "19세기 말",
+                icon: "⚓",
+                badgeIcon: "📜",
+                badgeName: "조선 역사 마스터",
+                desc: "흥선대원군의 통상 수교 거부 정책, 최초의 근대적 불평등 조약인 강화도 조약과 개화 운동",
+                quizzes: [
+                    {
+                        type: "4지선다",
+                        question: "고종의 아버지로서 서원 철폐, 척화비 세우기, 경복궁 중건 등을 추진한 인물은 누구일까요?",
+                        clue: "💡 힌트: 서양 세력의 침략에 맞서 통상 수교 거부 정책을 펼쳤어요.",
+                        options: ["흥선대원군", "정약용", "김옥균", "고종"],
+                        answer: 0,
+                        explanation: "흥선대원군은 세도 정치의 폐단을 바로잡고 왕권을 강화하기 위해 노력했으며, 프랑스·미국의 침략(병인양요·신미양요)에 맞서 척화비를 세웠습니다."
+                    },
+                    {
+                        type: "O/X",
+                        question: "1876년에 체결된 '강화도 조약'은 우리나라 최초의 근대적 조약이자 일본에 유리한 불평등 조약이었다.",
+                        clue: "💡 힌트: 운요호 사건을 계기로 해안 측량권 등이 일본에 개방되었어요.",
+                        options: ["O (맞다)", "X (틀리다)"],
+                        answer: 0,
+                        explanation: "정답은 O입니다! 강화도 조약으로 부산, 원산, 인천 항구가 개항되었지만, 해안 측량권과 영사 재판권 등 일본에 유리한 조항이 담긴 불평등 조약이었습니다."
+                    },
+                    {
+                        type: "4지선다",
+                        question: "조선이 서양의 문물과 제도를 받아들여 나라를 발전시키자고 주장한 사람들을 무엇이라 부를까요?",
+                        clue: "💡 힌트: 우정총국 개국 잔치 때 갑신정변을 일으키기도 했어요.",
+                        options: ["개화파", "위정척사파", "붕당", "의병"],
+                        answer: 0,
+                        explanation: "김옥균, 박영효 등의 개화파는 근대 문물을 적극 도입하여 근대 국가로 나아가고자 이선 노력을 기울였습니다."
+                    }
+                ]
+            }
+        ];
+
+        // State Management stored in localStorage
+        const STORAGE_KEY = 'joseon_history_quiz_v1';
+        let userProgress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
+            score: 0,
+            clearedEras: [], // array of era IDs
+            wrongQuizzes: [] // list of wrong quiz items
+        };
+
+        let currentEra = null;
+        let currentQuizIndex = 0;
+        let selectedOption = null;
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userProgress));
+            updateHeaderStats();
+        }
+
+        function updateHeaderStats() {
+            document.getElementById('header-score').innerText = userProgress.score;
+            document.getElementById('header-badges').innerText = userProgress.clearedEras.length;
+            document.getElementById('wrong-count').innerText = userProgress.wrongQuizzes.length;
+        }
+
+        // NAVIGATION LOGIC
+        function showHomeScreen() {
+            playSound('click');
+            document.getElementById('screen-home').classList.remove('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('flex');
+            document.getElementById('screen-era-clear').classList.add('hidden');
+            document.getElementById('screen-era-clear').classList.remove('flex');
+            document.getElementById('screen-review').classList.add('hidden');
+            document.getElementById('screen-review').classList.remove('flex');
+            renderEraCards();
+            updateHeaderStats();
+        }
+
+        function renderEraCards() {
+            const container = document.getElementById('era-card-container');
+            container.innerHTML = '';
+
+            erasData.forEach((era) => {
+                const isCleared = userProgress.clearedEras.includes(era.id);
+                const isUnlocked = era.id === 1 || userProgress.clearedEras.includes(era.id - 1);
+
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl border-2 transition flex flex-col justify-between gap-3 ${
+                    isCleared 
+                    ? 'bg-emerald-50 border-emerald-500 shadow-sm' 
+                    : isUnlocked 
+                    ? 'bg-white border-amber-800/40 hover:border-amber-800 hover:shadow-md cursor-pointer' 
+                    : 'bg-slate-100 border-slate-300 opacity-60 cursor-not-allowed'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl sm:text-4xl p-2 bg-amber-100/60 rounded-xl border border-amber-300/50">${era.icon}</span>
+                            <div>
+                                <span class="text-[10px] font-jua bg-amber-800/10 text-amber-900 px-2 py-0.5 rounded">${era.period}</span>
+                                <h4 class="font-jua text-base sm:text-lg text-slate-800 mt-0.5">${era.title}</h4>
+                            </div>
+                        </div>
+                        ${isCleared ? `<span class="text-2xl" title="훈장 획득!">${era.badgeIcon}</span>` : ''}
+                    </div>
+                    <p class="text-xs text-slate-600 font-batang leading-relaxed">${era.desc}</p>
+                    <div class="flex items-center justify-between border-t border-slate-200/60 pt-2.5 mt-1">
+                        <span class="text-[11px] font-jua text-slate-500">문제 수: ${era.quizzes.length}문항</span>
+                        ${
+                            isCleared 
+                            ? `<button onclick="startQuiz(${era.id})" class="btn-push bg-emerald-600 hover:bg-emerald-700 text-white font-jua text-xs px-3 py-1.5 rounded-xl">다시 풀기</button>` 
+                            : isUnlocked 
+                            ? `<button onclick="startQuiz(${era.id})" class="btn-push bg-joseonRed hover:bg-red-700 text-white font-jua text-xs px-4 py-1.5 rounded-xl">도전하기 🚀</button>` 
+                            : `<span class="text-xs font-jua text-slate-400">🔒 이전 시대 완료 필요</span>`
+                        }
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // QUIZ PLAY LOGIC
+        function startQuiz(eraId) {
+            playSound('click');
+            currentEra = erasData.find(e => e.id === eraId);
+            currentQuizIndex = 0;
+
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+            document.getElementById('screen-quiz').classList.add('flex');
+
+            loadCurrentQuizQuestion();
+        }
+
+        function loadCurrentQuizQuestion() {
+            const quiz = currentEra.quizzes[currentQuizIndex];
+            selectedOption = null;
+
+            // Reset UI
+            document.getElementById('quiz-era-badge').innerText = `제 ${currentEra.id}시대`;
+            document.getElementById('quiz-era-title').innerText = currentEra.title;
+            document.getElementById('quiz-current-num').innerText = currentQuizIndex + 1;
+            document.getElementById('quiz-total-num').innerText = currentEra.quizzes.length;
+            document.getElementById('quiz-type-tag').innerText = quiz.type;
+            document.getElementById('quiz-question').innerText = quiz.question;
+
+            // Clue box
+            const clueBox = document.getElementById('quiz-clue-box');
+            if (quiz.clue) {
+                clueBox.innerText = quiz.clue;
+                clueBox.classList.remove('hidden');
+            } else {
+                clueBox.classList.add('hidden');
+            }
+
+            // Mascot message
+            document.getElementById('mascot-avatar').innerText = ['🧙‍♂️', '🦁', '📜'][currentQuizIndex % 3];
+            document.getElementById('mascot-msg').innerText = `"차근차근 지문을 읽고 정답을 선택해보세요!"`;
+
+            // Render Options
+            const optionsBox = document.getElementById('quiz-options-box');
+            optionsBox.innerHTML = '';
+
+            quiz.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = `option-btn btn-push p-3 sm:p-4 rounded-xl border-2 border-amber-800/30 text-left font-jua text-xs sm:text-sm text-slate-800 bg-white hover:bg-amber-50 transition flex items-center gap-3`;
+                btn.onclick = () => checkAnswer(index, btn);
+
+                const numSpan = document.createElement('span');
+                numSpan.className = `w-6 h-6 rounded-full bg-amber-100 text-amber-900 flex items-center justify-center text-xs font-bold shrink-0 border border-amber-300`;
+                numSpan.innerText = index + 1;
+
+                const textSpan = document.createElement('span');
+                textSpan.innerText = optText;
+
+                btn.appendChild(numSpan);
+                btn.appendChild(textSpan);
+                optionsBox.appendChild(btn);
+            });
+
+            // Hide Explanation
+            document.getElementById('quiz-explanation-box').classList.add('hidden');
+        }
+
+        function checkAnswer(chosenIdx, btnElement) {
+            if (selectedOption !== null) return; // Prevent double taps
+            selectedOption = chosenIdx;
+
+            const quiz = currentEra.quizzes[currentQuizIndex];
+            const isCorrect = chosenIdx === quiz.answer;
+
+            const allOptionBtns = document.querySelectorAll('.option-btn');
+            allOptionBtns.forEach(b => b.classList.add('pointer-events-none'));
+
+            const expBox = document.getElementById('quiz-explanation-box');
+            const resultIcon = document.getElementById('result-icon');
+            const resultTitle = document.getElementById('result-title');
+            const expText = document.getElementById('explanation-text');
+
+            if (isCorrect) {
+                playSound('correct');
+                btnElement.classList.remove('bg-white', 'hover:bg-amber-50');
+                btnElement.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-900');
+                
+                resultIcon.innerText = "🎉";
+                resultTitle.innerText = "정답입니다! (+10점)";
+                resultTitle.className = "font-jua text-base text-emerald-800";
+                expBox.className = "bg-emerald-50 border-2 border-emerald-400 rounded-xl p-4 flex flex-col gap-2";
+
+                document.getElementById('mascot-msg').innerText = `"훌륭해요! 교과서 핵심 내용을 완벽히 파악했군요!"`;
+
+                userProgress.score += 10;
+                saveProgress();
+            } else {
+                playSound('wrong');
+                btnElement.classList.remove('bg-white', 'hover:bg-amber-50');
+                btnElement.classList.add('bg-red-100', 'border-red-400', 'text-red-900');
+
+                // Highlight correct option
+                allOptionBtns[quiz.answer].classList.add('bg-emerald-100', 'border-emerald-500');
+
+                resultIcon.innerText = "💡";
+                resultTitle.innerText = "아쉽네요! 정답을 확인해보세요.";
+                resultTitle.className = "font-jua text-base text-red-800";
+                expBox.className = "bg-red-50 border-2 border-red-300 rounded-xl p-4 flex flex-col gap-2";
+
+                document.getElementById('mascot-msg').innerText = `"틀려도 괜찮아요! 아래 해설을 읽으며 배워가면 돼요!"`;
+
+                // Add to Wrong Quizzes Notebook (Avoid duplication)
+                const alreadyAdded = userProgress.wrongQuizzes.some(q => q.question === quiz.question);
+                if (!alreadyAdded) {
+                    userProgress.wrongQuizzes.push({
+                        eraTitle: currentEra.title,
+                        ...quiz
+                    });
+                    saveProgress();
+                }
+            }
+
+            expText.innerText = quiz.explanation;
+            expBox.classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            playSound('click');
+            currentQuizIndex++;
+
+            if (currentQuizIndex < currentEra.quizzes.length) {
+                loadCurrentQuizQuestion();
+            } else {
+                // Era Finished!
+                finishEra();
+            }
+        }
+
+        function finishEra() {
+            playSound('fanfare');
+
+            if (!userProgress.clearedEras.includes(currentEra.id)) {
+                userProgress.clearedEras.push(currentEra.id);
+                userProgress.score += 50; // Era Clear Bonus
+                saveProgress();
+            }
+
+            // Confetti effect
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
+
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('flex');
+            
+            document.getElementById('screen-era-clear').classList.remove('hidden');
+            document.getElementById('screen-era-clear').classList.add('flex');
+
+            document.getElementById('clear-era-name').innerText = currentEra.title;
+            document.getElementById('clear-badge-icon').innerText = currentEra.badgeIcon;
+            document.getElementById('clear-badge-name').innerText = currentEra.badgeName;
+        }
+
+        // REVIEW MODE (WRONG QUESTIONS)
+        function showReviewScreen() {
+            playSound('click');
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-review').classList.remove('hidden');
+            document.getElementById('screen-review').classList.add('flex');
+
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            const container = document.getElementById('review-list-container');
+            container.innerHTML = '';
+
+            if (userProgress.wrongQuizzes.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-slate-500 font-jua">
+                        <span class="text-4xl">🌟</span>
+                        <p class="mt-2 text-base">틀린 문제가 없습니다! 참 잘했어요!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            userProgress.wrongQuizzes.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white border-2 border-amber-800/20 rounded-xl p-4 flex flex-col gap-2 relative shadow-sm";
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center text-xs text-amber-900 font-jua border-b pb-1">
+                        <span>[${item.eraTitle}] 오답노트 #${index + 1}</span>
+                        <button onclick="removeWrongQuiz(${index})" class="text-slate-400 hover:text-red-500 text-xs">
+                            <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
+                    </div>
+                    <h4 class="font-jua text-sm text-slate-900 mt-1">Q. ${item.question}</h4>
+                    <div class="text-xs font-jua text-emerald-800 bg-emerald-50 p-2 rounded border border-emerald-200">
+                        정답: ${item.options[item.answer]}
+                    </div>
+                    <p class="text-xs font-batang text-slate-700 bg-amber-50 p-2.5 rounded leading-relaxed">
+                        📖 해설: ${item.explanation}
+                    </p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function removeWrongQuiz(idx) {
+            playSound('click');
+            userProgress.wrongQuizzes.splice(idx, 1);
+            saveProgress();
+            renderReviewList();
+        }
+
+        function resetAllProgress() {
+            if (confirm("모든 학습 기록과 점수를 초기화하시겠습니까?")) {
+                userProgress = { score: 0, clearedEras: [], wrongQuizzes: [] };
+                saveProgress();
+                showHomeScreen();
+            }
+        }
+
+        // INITIAL LOAD
+        window.onload = () => {
+            renderEraCards();
+            updateHeaderStats();
+        };
+    </script>
+</body>
+</html>
