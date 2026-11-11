@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>초등 5학년 영어 스펠링 맞추기 게임</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Jua, Gaegu, Fredoka) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Gaegu:wght@700&family=Jua&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelYellow: '#FEF08A',
+                        pastelPink: '#FBCFE8',
+                        pastelBlue: '#BAE6FD',
+                        pastelGreen: '#BBF7D0',
+                        pastelPurple: '#DDD6FE',
+                        pastelOrange: '#FFEDD5',
+                    },
+                    fontFamily: {
+                        jua: ['Jua', 'sans-serif'],
+                        gaegu: ['Gaegu', 'cursive'],
+                        fredoka: ['Fredoka', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Jua', sans-serif;
+            background-color: #F0F9FF;
+            background-image: radial-gradient(#CBD5E1 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .letter-block {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+        }
+        .letter-block:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        .drop-zone {
+            transition: all 0.2s ease;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.08);
+        }
+
+        .drop-zone.drag-over {
+            scale: 1.08;
+            border-color: #3B82F6;
+            background-color: #EFF6FF;
+        }
+
+        @keyframes bounce-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-bounce-gentle {
+            animation: bounce-gentle 2s infinite ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes pulse-success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-success {
+            animation: pulse-success 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-3 sm:p-6 text-slate-800">
+
+    <!-- 상단 헤더 & 컨트롤 바 -->
+    <header class="w-full max-w-4xl flex flex-col sm:flex-row justify-between items-center gap-3 bg-white/95 backdrop-blur-md p-4 rounded-3xl shadow-lg border-4 border-pastelPurple">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl sm:text-4xl text-amber-500 animate-bounce-gentle">🎓</span>
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text transparent">
+                    초등 5학년 스펠링 마스터
+                </h1>
+                <span class="text-xs text-indigo-400 font-sans">Grade 5 English Spelling Challenge</span>
+            </div>
+        </div>
+        
+        <!-- 상태 표시판 (점수, 별, 스테이지) -->
+        <div class="flex items-center gap-3 sm:gap-4 bg-indigo-50 px-4 sm:px-5 py-2 rounded-2xl border-2 border-indigo-200">
+            <div class="text-center">
+                <span class="text-xs text-indigo-500 block">진행도</span>
+                <span id="stage-text" class="text-base sm:text-lg font-bold text-indigo-800">1 / 20</span>
+            </div>
+            <div class="h-8 w-0.5 bg-indigo-200"></div>
+            <div class="text-center">
+                <span class="text-xs text-indigo-500 block">획득한 별</span>
+                <span id="star-text" class="text-base sm:text-lg font-bold text-amber-500 flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-star"></i> <span id="star-count">0</span>
+                </span>
+            </div>
+            <div class="h-8 w-0.5 bg-indigo-200"></div>
+            <div class="text-center">
+                <span class="text-xs text-indigo-500 block">점수</span>
+                <span id="score-text" class="text-xl sm:text-2xl font-bold text-indigo-600">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 중앙 게임 구역 -->
+    <main class="w-full max-w-4xl flex-1 flex flex-col items-center justify-center my-4 gap-5">
+
+        <!-- 단어 힌트 카드 -->
+        <div class="w-full bg-white rounded-3xl p-5 sm:p-6 shadow-xl border-4 border-pastelBlue text-center relative overflow-hidden">
+            <div class="absolute top-3 right-3 flex items-center gap-1.5 sm:gap-2">
+                <!-- 발음 속도 선택 메뉴 추가 -->
+                <div class="relative inline-block">
+                    <select id="speed-select" onchange="changeSpeechRate(this.value)" class="h-11 sm:h-12 bg-indigo-50 border-2 border-indigo-200 text-indigo-800 text-xs sm:text-sm rounded-2xl px-2 sm:px-3 font-bold shadow-sm focus:outline-none focus:border-indigo-400 cursor-pointer">
+                        <option value="0.65">🐢 느리게</option>
+                        <option value="0.85" selected>▶️ 보통</option>
+                        <option value="1.05">🐇 빠르게</option>
+                    </select>
+                </div>
+
+                <button id="btn-sound" onclick="speakCurrentWord()" class="w-11 h-11 sm:w-12 sm:h-12 bg-pastelBlue hover:bg-sky-200 text-sky-700 rounded-2xl flex items-center justify-center text-xl shadow-md transition hover:scale-105 active:scale-95" title="발음 듣기">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <button id="btn-hint" onclick="useHint()" class="w-11 h-11 sm:w-12 sm:h-12 bg-pastelYellow hover:bg-amber-200 text-amber-700 rounded-2xl flex items-center justify-center text-xl shadow-md transition hover:scale-105 active:scale-95" title="힌트 (스펠링 하나 공개)">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </button>
+            </div>
+
+            <!-- 단어 뜻 (한국어) -->
+            <div class="text-slate-400 text-sm font-gaegu text-xl mb-1">다음 뜻에 맞는 영어 단어 스펠링을 맞춰보세요!</div>
+            <div id="word-meaning" class="text-3xl sm:text-5xl font-extrabold text-indigo-600 my-2">
+                숙제
+            </div>
+            
+            <!-- 힌트 및 상태 메시지 출력 창 -->
+            <div id="hint-box" class="text-sm sm:text-base text-pink-500 min-h-[1.5rem] mt-1 font-semibold"></div>
+        </div>
+
+        <!-- 빈칸 Drop Zone 라인 -->
+        <div class="w-full bg-white/80 backdrop-blur-sm rounded-3xl p-4 sm:p-6 shadow-md border-2 border-slate-200 flex flex-col items-center gap-3">
+            <div class="text-xs text-slate-400">블록을 끌어다 놓거나, 아래 블록을 터치/클릭하세요!</div>
+            <div id="drop-zone-container" class="flex flex-wrap justify-center gap-1.5 sm:gap-3 my-2 min-h-[70px] items-center">
+                <!-- Drop Zones dynamically generated here -->
+            </div>
+        </div>
+
+        <!-- 스펠링 알파벳 블록 라인 -->
+        <div class="w-full bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 rounded-3xl p-4 sm:p-6 shadow-inner border-2 border-white flex flex-col items-center gap-3">
+            <div class="text-xs text-slate-500">사용할 수 있는 스펠링 알파벳 블록</div>
+            <div id="letter-blocks-container" class="flex flex-wrap justify-center gap-2 sm:gap-3 min-h-[70px] items-center max-w-full overflow-x-auto">
+                <!-- Letter Blocks dynamically generated here -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 하단 컨트롤 버튼 & 푸터 -->
+    <footer class="w-full max-w-4xl flex flex-wrap justify-between items-center gap-3 bg-white/80 p-4 rounded-3xl shadow-md">
+        <button onclick="resetCurrentWord()" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl shadow transition flex items-center gap-2 active:scale-95">
+            <i class="fa-solid fa-rotate-right"></i> 다시 놓기
+        </button>
+
+        <div class="flex gap-2">
+            <button id="btn-next" onclick="nextWord()" class="px-6 py-3 bg-pastelGreen hover:bg-emerald-200 text-emerald-800 font-bold rounded-2xl shadow transition flex items-center gap-2 active:scale-95">
+                다음 단어 <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </footer>
+
+    <!-- 게임 완료 모달 -->
+    <div id="completion-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl border-4 border-pastelPurple animate-success">
+            <div class="text-6xl mb-3">🏆🌟🎉</div>
+            <h2 class="text-3xl font-bold text-indigo-600 mb-1">축하합니다!</h2>
+            <p class="text-slate-600 mb-4 text-base">5학년 필수 영어 단어를 모두 마스터했습니다!</p>
+
+            <div id="stars-display" class="flex justify-center gap-2 text-4xl text-amber-400 mb-4">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+
+            <div class="bg-indigo-50 p-4 rounded-2xl border-2 border-indigo-100 mb-6 flex justify-around">
+                <div>
+                    <p class="text-xs text-indigo-500">최종 점수</p>
+                    <p id="final-score" class="text-3xl font-extrabold text-indigo-600">0점</p>
+                </div>
+                <div class="h-10 w-0.5 bg-indigo-200"></div>
+                <div>
+                    <p class="text-xs text-indigo-500">획득한 별</p>
+                    <p id="final-stars" class="text-3xl font-extrabold text-amber-500">0개</p>
+                </div>
+            </div>
+
+            <button onclick="restartGame()" class="w-full py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-2xl shadow-lg transition text-xl active:scale-95">
+                다시 도전하기
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript 로직 -->
+    <script>
+        // 초등학교 5학년 수준 영어 단어 목록 (20개)
+        const masterWordList = [
+            { word: "Homework", meaning: "숙제" },
+            { word: "Teacher", meaning: "선생님" },
+            { word: "Weather", meaning: "날씨" },
+            { word: "English", meaning: "영어" },
+            { word: "Subject", meaning: "과목" },
+            { word: "Science", meaning: "과학" },
+            { word: "Favorite", meaning: "가장 좋아하는" },
+            { word: "Practice", meaning: "연습하다" },
+            { word: "Exercise", meaning: "운동하다" },
+            { word: "Season", meaning: "계절" },
+            { word: "Summer", meaning: "여름" },
+            { word: "Winter", meaning: "겨울" },
+            { word: "Beautiful", meaning: "아름다운" },
+            { word: "Delicious", meaning: "맛있는" },
+            { word: "Calendar", meaning: "달력" },
+            { word: "Computer", meaning: "컴퓨터" },
+            { word: "Tomorrow", meaning: "내일" },
+            { word: "Yesterday", meaning: "어제" },
+            { word: "Library", meaning: "도서관" },
+            { word: "Hospital", meaning: "병원" }
+        ];
+
+        // 현재 라운드에서 사용되는 셔플된 단어 목록
+        let currentSessionWords = [];
+
+        // 알파벳 블록용 블록 컬러 테마
+        const pastelColors = [
+            'bg-red-200 text-red-800 border-red-300',
+            'bg-orange-200 text-orange-800 border-orange-300',
+            'bg-amber-200 text-amber-800 border-amber-300',
+            'bg-green-200 text-green-800 border-green-300',
+            'bg-emerald-200 text-emerald-800 border-emerald-300',
+            'bg-sky-200 text-sky-800 border-sky-300',
+            'bg-indigo-200 text-indigo-800 border-indigo-300',
+            'bg-purple-200 text-purple-800 border-purple-300',
+            'bg-pink-200 text-pink-800 border-pink-300'
+        ];
+
+        // 상태 변수
+        let currentIndex = 0;
+        let score = 0;
+        let starCount = 0;
+        let usedHintInWord = false;
+        let currentTargetWord = "";
+        let shuffledLetters = [];
+        let userAnswers = [];
+        let draggedElement = null;
+        let audioCtx = null;
+        let speechRate = 0.85; // 기본 발음 속도 (보통 0.85)
+
+        // Web Audio API 효과음
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'pop') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'correct') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                osc.frequency.setValueAtTime(1046.50, now + 0.25); // C6
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
+                osc.start(now);
+                osc.stop(now + 0.45);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.setValueAtTime(140, now + 0.15);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            }
+        }
+
+        // 배열 셔플 함수 (Fisher-Yates)
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // 새로운 학습 세션 시작 (문제 순서 랜덤화)
+        function startNewSession() {
+            currentSessionWords = shuffleArray(masterWordList);
+            currentIndex = 0;
+            loadWord(currentIndex);
+        }
+
+        // 초기화 및 게임 시작
+        window.onload = () => {
+            startNewSession();
+        };
+
+        // 특정 단어 로드
+        function loadWord(index) {
+            if (index >= currentSessionWords.length) {
+                showCompletionModal();
+                return;
+            }
+
+            usedHintInWord = false;
+            const currentObj = currentSessionWords[index];
+            currentTargetWord = currentObj.word;
+            
+            document.getElementById('word-meaning').innerText = currentObj.meaning;
+            document.getElementById('stage-text').innerText = `${index + 1} / ${currentSessionWords.length}`;
+            document.getElementById('hint-box').innerText = '';
+
+            userAnswers = new Array(currentTargetWord.length).fill(null);
+
+            // 알파벳 블록 구성 (정답 알파벳 + 교란용 무작위 알파벳 1개 추가)
+            const letters = currentTargetWord.split('').map((char, id) => ({
+                id: `char-${id}-${Date.now()}`,
+                char: char,
+                colorClass: pastelColors[Math.floor(Math.random() * pastelColors.length)]
+            }));
+
+            // 5학년 난이도를 위해 추가 알파벳 1개 추가
+            const extraAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const randomChar = extraAlphabet[Math.floor(Math.random() * extraAlphabet.length)];
+            letters.push({
+                id: `extra-0-${Date.now()}`,
+                char: randomChar,
+                colorClass: pastelColors[Math.floor(Math.random() * pastelColors.length)]
+            });
+
+            // 스펠링 블록 순서 무작위 셔플
+            shuffledLetters = shuffleArray(letters);
+
+            renderBoard();
+            
+            setTimeout(() => {
+                speakCurrentWord();
+            }, 300);
+        }
+
+        // 보드 (Drop Zone 및 알파벳 블록 목록) 렌더링
+        function renderBoard() {
+            const dropContainer = document.getElementById('drop-zone-container');
+            const blockContainer = document.getElementById('letter-blocks-container');
+
+            dropContainer.innerHTML = '';
+            blockContainer.innerHTML = '';
+
+            // 1. Drop Zone 생성
+            for (let i = 0; i < currentTargetWord.length; i++) {
+                const zone = document.createElement('div');
+                zone.className = `drop-zone w-10 h-12 sm:w-14 sm:h-16 rounded-2xl border-3 border-dashed border-slate-300 bg-white/70 flex items-center justify-center text-xl sm:text-3xl font-bold font-fredoka relative transition-all`;
+                zone.dataset.index = i;
+
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('click', () => handleZoneClick(i));
+
+                if (userAnswers[i]) {
+                    const block = createBlockElement(userAnswers[i], true, i);
+                    zone.appendChild(block);
+                }
+
+                dropContainer.appendChild(zone);
+            }
+
+            // 2. 하단 알파벳 블록 생성
+            shuffledLetters.forEach((item) => {
+                const isUsed = userAnswers.some(ans => ans && ans.id === item.id);
+
+                if (!isUsed) {
+                    const block = createBlockElement(item, false);
+                    blockContainer.appendChild(block);
+                }
+            });
+        }
+
+        // 블록 DOM 요소 생성 Helper
+        function createBlockElement(item, inZone, zoneIndex = null) {
+            const block = document.createElement('div');
+            block.className = `letter-block w-9 h-11 sm:w-12 sm:h-14 rounded-2xl ${item.colorClass} border-b-4 font-fredoka font-bold text-xl sm:text-2xl flex items-center justify-center cursor-pointer select-none`;
+            block.innerText = item.char;
+            block.draggable = true;
+            block.dataset.id = item.id;
+            block.dataset.char = item.char;
+
+            block.addEventListener('dragstart', (e) => {
+                draggedElement = { item, fromZoneIndex: zoneIndex };
+                e.dataTransfer.setData('text/plain', item.id);
+                block.classList.add('opacity-50');
+            });
+
+            block.addEventListener('dragend', () => {
+                block.classList.remove('opacity-50');
+                draggedElement = null;
+            });
+
+            block.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playSound('pop');
+
+                if (inZone) {
+                    userAnswers[zoneIndex] = null;
+                    renderBoard();
+                } else {
+                    const emptyIndex = userAnswers.findIndex(val => val === null);
+                    if (emptyIndex !== -1) {
+                        userAnswers[emptyIndex] = item;
+                        renderBoard();
+                        checkAnswer();
+                    }
+                }
+            });
+
+            return block;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+
+            const targetIndex = parseInt(e.currentTarget.dataset.index);
+
+            if (draggedElement) {
+                playSound('pop');
+
+                if (draggedElement.fromZoneIndex !== null) {
+                    userAnswers[draggedElement.fromZoneIndex] = null;
+                }
+
+                userAnswers[targetIndex] = draggedElement.item;
+                renderBoard();
+                checkAnswer();
+            }
+        }
+
+        function handleZoneClick(index) {
+            if (userAnswers[index]) {
+                playSound('pop');
+                userAnswers[index] = null;
+                renderBoard();
+            }
+        }
+
+        // 정답 체크 로직 및 보너스/별 보상
+        function checkAnswer() {
+            const isFilled = userAnswers.every(ans => ans !== null);
+
+            if (isFilled) {
+                const currentSpelling = userAnswers.map(ans => ans.char).join('');
+
+                if (currentSpelling === currentTargetWord) {
+                    playSound('correct');
+                    
+                    // 점수 및 별 계산 (힌트 미사용 시 추가 보너스)
+                    let earnedPoints = 100;
+                    if (!usedHintInWord) {
+                        earnedPoints += 20; // 힌트 미사용 보너스
+                        starCount++;
+                        document.getElementById('star-count').innerText = starCount;
+                    }
+                    
+                    score += earnedPoints;
+                    document.getElementById('score-text').innerText = score;
+
+                    confetti({
+                        particleCount: 90,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+
+                    const dropContainer = document.getElementById('drop-zone-container');
+                    dropContainer.classList.add('animate-success');
+
+                    setTimeout(() => {
+                        dropContainer.classList.remove('animate-success');
+                        nextWord();
+                    }, 1000);
+
+                } else {
+                    playSound('wrong');
+                    const dropContainer = document.getElementById('drop-zone-container');
+                    dropContainer.classList.add('animate-shake');
+                    setTimeout(() => {
+                        dropContainer.classList.remove('animate-shake');
+                    }, 500);
+                }
+            }
+        }
+
+        function resetCurrentWord() {
+            playSound('pop');
+            userAnswers = new Array(currentTargetWord.length).fill(null);
+            renderBoard();
+        }
+
+        function nextWord() {
+            currentIndex++;
+            loadWord(currentIndex);
+        }
+
+        // 힌트 사용
+        function useHint() {
+            playSound('pop');
+            usedHintInWord = true;
+            
+            // 아직 채워지지 않은 첫 번째 빈칸의 알파벳을 힌트로 안내
+            const emptyIndex = userAnswers.findIndex(val => val === null);
+            const targetPos = emptyIndex !== -1 ? emptyIndex : 0;
+            const correctChar = currentTargetWord[targetPos];
+
+            const hintBox = document.getElementById('hint-box');
+            hintBox.innerText = `💡 힌트: ${targetPos + 1}번째 글자는 '${correctChar}' 입니다!`;
+        }
+
+        // 발음 속도 변경
+        function changeSpeechRate(rateValue) {
+            speechRate = parseFloat(rateValue);
+            speakCurrentWord();
+        }
+
+        // SpeechSynthesis API (영단어 발음 - 설정된 속도 반영)
+        function speakCurrentWord(text = currentTargetWord) {
+            playSound('pop');
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // 이전 음성 정지
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = speechRate; // 현재 선택된 발음 속도 적용 (0.65 / 0.85 / 1.05)
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // 완료 모달 및 별점 요약
+        function showCompletionModal() {
+            document.getElementById('final-score').innerText = `${score}점`;
+            document.getElementById('final-stars').innerText = `${starCount}개`;
+            
+            // 별점에 따른 세부 표시
+            const starsDisplay = document.getElementById('stars-display');
+            if (starCount >= 15) {
+                starsDisplay.innerHTML = `<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>`;
+            } else if (starCount >= 8) {
+                starsDisplay.innerHTML = `<i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>`;
+            } else {
+                starsDisplay.innerHTML = `<i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>`;
+            }
+
+            document.getElementById('completion-modal').classList.remove('hidden');
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.5 }
+            });
+        }
+
+        function restartGame() {
+            score = 0;
+            starCount = 0;
+            document.getElementById('score-text').innerText = '0';
+            document.getElementById('star-count').innerText = '0';
+            document.getElementById('completion-modal').classList.add('hidden');
+            startNewSession(); // 새로운 세션 시작 시 문제 순서 재생성 및 셔플
+        }
+    </script>
+</body>
+</html>
